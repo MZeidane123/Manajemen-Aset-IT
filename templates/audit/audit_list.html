@@ -1,0 +1,121 @@
+{% extends 'base.html' %}
+{% block title %}Audit Trail — ASSETRACK PRO{% endblock %}
+{% block page_title %}Audit Trail{% endblock %}
+
+{% block content %}
+<div class="scroll-reveal revealed">
+    <div class="rounded-2xl bg-white p-[1px] shadow-ambient ring-1 ring-black/[0.03] card-double-bezel">
+        <div class="rounded-[calc(1rem-1px)] bg-white shadow-[inset_0_1px_1px_rgba(255,255,255,0.8)]">
+            <!-- Header + Export -->
+            <div class="flex items-center justify-between px-6 pt-6 pb-4 border-b border-charcoal-100/40">
+                <div>
+                    <span class="eyebrow-tag">Monitoring</span>
+                    <h3 class="font-display text-sm font-semibold text-charcoal-800 mt-2">Riwayat Aktivitas</h3>
+                </div>
+                <a href="{% url 'core:asset_export' %}" class="btn-magnetic inline-flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-semibold text-white bg-emerald-600 hover:bg-emerald-700 shadow-lg shadow-emerald-500/20 transition-all duration-300 active:scale-[0.98]">
+                    <i class="ph-bold ph-file-xls text-sm"></i> Export Excel
+                </a>
+            </div>
+
+            <!-- Filter -->
+            <form method="get" class="px-6 py-4 border-b border-charcoal-100/40 bg-charcoal-50/30">
+                <div class="flex items-center gap-3">
+                    <div class="flex-1 relative">
+                        <i class="ph-light ph-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-charcoal-400 text-sm pointer-events-none"></i>
+                        <input type="text" name="q" value="{{ query }}" placeholder="Cari objek, user, atau model..." class="w-full pl-9 pr-3 py-2 text-xs bg-white border border-charcoal-200/60 rounded-xl text-charcoal-700 placeholder-charcoal-400 focus:outline-none focus:border-blue-400/40 transition-all duration-300">
+                    </div>
+                    <div class="relative">
+                        <i class="ph-light ph-funnel absolute left-3 top-1/2 -translate-y-1/2 text-charcoal-400 text-sm pointer-events-none"></i>
+                        <select name="action" class="pl-9 pr-8 py-2 text-xs bg-white border border-charcoal-200/60 rounded-xl text-charcoal-700 focus:outline-none focus:border-blue-400/40 appearance-none transition-all duration-300">
+                            <option value="">Semua Aksi</option>
+                            {% for a in action_choices %}
+                            <option value="{{ a.0 }}" {% if selected_action == a.0 %}selected{% endif %}>{{ a.1 }}</option>
+                            {% endfor %}
+                        </select>
+                        <i class="ph-bold ph-caret-down absolute right-3 top-1/2 -translate-y-1/2 text-charcoal-400 text-[10px] pointer-events-none"></i>
+                    </div>
+                    <button type="submit" class="btn-magnetic inline-flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-semibold text-white bg-blue-600 hover:bg-blue-700 shadow-lg shadow-blue-500/20 transition-all duration-300 active:scale-[0.98]">
+                        <i class="ph-bold ph-magnifying-glass text-sm"></i> Cari
+                    </button>
+                </div>
+            </form>
+
+            <!-- Table -->
+            <div class="overflow-x-auto">
+                <table class="w-full">
+                    <thead>
+                        <tr class="border-b border-charcoal-200 divide-x divide-charcoal-200">
+                            <th class="px-6 py-3.5 text-left text-[11px] font-semibold text-charcoal-400 uppercase tracking-wider">Waktu</th>
+                            <th class="px-6 py-3.5 text-left text-[11px] font-semibold text-charcoal-400 uppercase tracking-wider">User</th>
+                            <th class="px-6 py-3.5 text-left text-[11px] font-semibold text-charcoal-400 uppercase tracking-wider">Aksi</th>
+                            <th class="px-6 py-3.5 text-left text-[11px] font-semibold text-charcoal-400 uppercase tracking-wider">Objek</th>
+                            <th class="px-6 py-3.5 text-right text-[11px] font-semibold text-charcoal-400 uppercase tracking-wider">Detail</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-charcoal-200">
+                        {% for log in logs %}
+                        <tr class="group transition-all duration-300 hover:bg-charcoal-50/40 divide-x divide-charcoal-200">
+                            <td class="px-6 py-4">
+                                <span class="text-sm text-charcoal-800">{{ log.created_at|date:'d M Y H:i:s' }}</span>
+                            </td>
+                            <td class="px-6 py-4">
+                                <div class="flex items-center gap-2">
+                                    <div class="w-7 h-7 rounded-lg bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center text-[10px] font-bold text-white flex-shrink-0">
+                                        {{ log.user.email|first|upper|default:'S' }}
+                                    </div>
+                                    <span class="text-sm text-charcoal-800">{{ log.user.email|default:'System' }}</span>
+                                </div>
+                            </td>
+                            <td class="px-6 py-4">
+                                <span class="inline-flex items-center gap-1 px-2.5 py-1 text-[10px] font-semibold rounded-full ring-1
+                                    {% if log.action == 'create' %}bg-emerald-50 text-emerald-800 ring-emerald-200/50
+                                    {% elif log.action == 'update' %}bg-blue-50 text-blue-800 ring-blue-200/50
+                                    {% elif log.action == 'delete' %}bg-red-50 text-red-800 ring-red-200/50
+                                    {% elif log.action == 'import' %}bg-violet-50 text-violet-800 ring-violet-200/50
+                                    {% elif log.action == 'export' %}bg-cyan-50 text-cyan-800 ring-cyan-200/50
+                                    {% elif log.action == 'sign' %}bg-amber-50 text-amber-800 ring-amber-200/50
+                                    {% else %}bg-charcoal-50 text-charcoal-700 ring-charcoal-200/50{% endif %}">
+                                    <i class="ph-bold
+                                        {% if log.action == 'create' %}ph-plus-circle
+                                        {% elif log.action == 'update' %}ph-pencil-circle
+                                        {% elif log.action == 'delete' %}ph-trash
+                                        {% elif log.action == 'import' %}ph-upload-simple
+                                        {% elif log.action == 'export' %}ph-download-simple
+                                        {% elif log.action == 'sign' %}ph-signature
+                                        {% else %}ph-info{% endif %} text-[10px]"></i>
+                                    {{ log.get_action_display }}
+                                </span>
+                            </td>
+                            <td class="px-6 py-4">
+                                <div>
+                                    <span class="text-xs font-medium text-charcoal-800">{{ log.model_name }}</span>
+                                    <p class="text-xs text-charcoal-600 mt-0.5">{{ log.object_repr|truncatechars:50 }}</p>
+                                </div>
+                            </td>
+                            <td class="px-6 py-4 text-right">
+                                {% if log.details %}
+                                <span class="inline-flex items-center justify-center w-9 h-9 rounded-xl text-blue-600 bg-blue-50 hover:bg-blue-100 cursor-default transition-all duration-200" title="{{ log.details }}">
+                                    <i class="ph-bold ph-info text-base"></i>
+                                </span>
+                                {% else %}
+                                <span class="text-xs text-charcoal-400">—</span>
+                                {% endif %}
+                            </td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="5" class="px-6 py-12 text-center">
+                                <div class="w-14 h-14 rounded-2xl bg-charcoal-50 flex items-center justify-center mx-auto mb-3.5">
+                                    <i class="ph-bold ph-clock-counter-clockwise text-charcoal-300 text-2xl"></i>
+                                </div>
+                                <p class="text-sm font-medium text-charcoal-400">Belum ada log audit.</p>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

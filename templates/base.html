@@ -1,0 +1,1027 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="id" class="h-full">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}ASSETRACK PRO — PT Dahana{% endblock %}</title>
+    <meta name="description" content="Enterprise Configuration Management Database - PT Dahana (Persero)">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['"Plus Jakarta Sans"', 'system-ui', 'sans-serif'],
+                        display: ['"Clash Display"', '"Plus Jakarta Sans"', 'system-ui', 'sans-serif'],
+                    },
+                    colors: {
+                        glass: {
+                            light: 'rgba(255,255,255,0.72)',
+                            DEFAULT: 'rgba(255,255,255,0.55)',
+                            dark: 'rgba(255,255,255,0.08)',
+                            border: 'rgba(255,255,255,0.18)',
+                        },
+                        charcoal: {
+                            50: '#f6f6f7',
+                            100: '#e7e7e9',
+                            200: '#d1d1d5',
+                            300: '#b0b0b7',
+                            400: '#888891',
+                            500: '#6d6d77',
+                            600: '#58585f',
+                            700: '#48484e',
+                            800: '#3e3e42',
+                            900: '#1a1a1e',
+                            950: '#0c0c0f',
+                        }
+                    },
+                    boxShadow: {
+                        'glass': '0 8px 32px rgba(10,10,12,0.05), 0 1px 3px rgba(10,10,12,0.03)',
+                        'glass-hover': '0 20px 48px rgba(10,10,12,0.07), 0 4px 12px rgba(10,10,12,0.03)',
+                        'card': '0 1px 3px rgba(10,10,12,0.03), 0 1px 2px rgba(10,10,12,0.02)',
+                        'card-hover': '0 16px 48px rgba(10,10,12,0.06), 0 4px 16px rgba(10,10,12,0.03)',
+                        'ambient': '0 4px 24px rgba(10,10,12,0.04), 0 1px 6px rgba(10,10,12,0.02)',
+                        'ambient-lg': '0 24px 64px rgba(10,10,12,0.06), 0 8px 24px rgba(10,10,12,0.03)',
+                        'ambient-xl': '0 48px 96px rgba(10,10,12,0.08), 0 12px 32px rgba(10,10,12,0.04)',
+                        'glow-blue': '0 0 24px rgba(59,130,246,0.15), 0 0 48px rgba(59,130,246,0.05)',
+                        'glow-emerald': '0 0 24px rgba(16,185,129,0.15), 0 0 48px rgba(16,185,129,0.05)',
+                        'glow-amber': '0 0 24px rgba(245,158,11,0.15), 0 0 48px rgba(245,158,11,0.05)',
+                        'glow-red': '0 0 24px rgba(239,68,68,0.15), 0 0 48px rgba(239,68,68,0.05)',
+                    },
+                    animation: {
+                        'float': 'float 6s ease-in-out infinite',
+                        'pulse-soft': 'pulse-soft 4s ease-in-out infinite',
+                        'shimmer': 'shimmer 2.5s ease-in-out infinite',
+                        'fade-in': 'fadeIn 0.6s cubic-bezier(0.16,1,0.3,1) forwards',
+                        'slide-up': 'slideUp 0.6s cubic-bezier(0.16,1,0.3,1) forwards',
+                        'slide-down': 'slideDown 0.4s cubic-bezier(0.16,1,0.3,1) forwards',
+                        'scale-in': 'scaleIn 0.4s cubic-bezier(0.16,1,0.3,1) forwards',
+                        'glow-pulse': 'glowPulse 3s ease-in-out infinite',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0px)' },
+                            '50%': { transform: 'translateY(-6px)' },
+                        },
+                        'pulse-soft': {
+                            '0%, 100%': { opacity: '1' },
+                            '50%': { opacity: '0.6' },
+                        },
+                        shimmer: {
+                            '0%': { backgroundPosition: '-200% 0' },
+                            '100%': { backgroundPosition: '200% 0' },
+                        },
+                        fadeIn: {
+                            '0%': { opacity: '0' },
+                            '100%': { opacity: '1' },
+                        },
+                        slideUp: {
+                            '0%': { opacity: '0', transform: 'translateY(20px)' },
+                            '100%': { opacity: '1', transform: 'translateY(0)' },
+                        },
+                        slideDown: {
+                            '0%': { opacity: '0', transform: 'translateY(-10px)' },
+                            '100%': { opacity: '1', transform: 'translateY(0)' },
+                        },
+                        scaleIn: {
+                            '0%': { opacity: '0', transform: 'scale(0.95)' },
+                            '100%': { opacity: '1', transform: 'scale(1)' },
+                        },
+                        glowPulse: {
+                            '0%, 100%': { boxShadow: '0 0 20px rgba(59,130,246,0.1)' },
+                            '50%': { boxShadow: '0 0 40px rgba(59,130,246,0.2)' },
+                        },
+                    },
+                    borderRadius: {
+                        'xs': '0.25rem',
+                        'sm': '0.375rem',
+                        'md': '0.5rem',
+                        'lg': '0.75rem',
+                        'xl': '1rem',
+                        '2xl': '1.5rem',
+                        '3xl': '2rem',
+                        'squircle': '1.25rem',
+                    },
+                    transitionTimingFunction: {
+                        'premium': 'cubic-bezier(0.16, 1, 0.3, 1)',
+                        'bounce-soft': 'cubic-bezier(0.32, 0.72, 0, 1)',
+                    }
+                }
+            }
+        }
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400;1,500&display=swap"
+        rel="stylesheet">
+    <link href="https://api.fontshare.com/v2/css?f[]=clash-display@400,500,600,700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css">
+    <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/light/style.css">
+    <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/bold/style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
+    <style>
+        /* ===== BASE RESETS ===== */
+        *,
+        *::before,
+        *::after {
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+            text-wrap: pretty;
+        }
+
+        /* ===== ACCESSIBILITY: Skip Link ===== */
+        .skip-link {
+            position: absolute;
+            top: -100%;
+            left: 16px;
+            z-index: 9999;
+            padding: 12px 24px;
+            background: #1a1a1e;
+            color: white;
+            border-radius: 0 0 12px 12px;
+            font-size: 14px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: top 0.2s ease;
+        }
+
+        .skip-link:focus {
+            top: 0;
+        }
+
+        /* ===== TYPOGRAPHY ===== */
+        .font-display {
+            font-family: 'Clash Display', 'Plus Jakarta Sans', system-ui, sans-serif;
+        }
+
+        .text-balance {
+            text-wrap: balance;
+        }
+
+        .tabular-nums {
+            font-variant-numeric: tabular-nums;
+        }
+
+        /* ===== Z-INDEX SCALE ===== */
+        /* z-10: content, z-20: topbar, z-30: sidebar, z-40: dropdowns, z-50: modals/toasts, z-[60]: noise overlay */
+
+        /* ===== SIDEBAR ===== */
+        .sidebar-shell {
+            transition: width 0.5s cubic-bezier(0.16, 1, 0.3, 1), transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .sidebar-inner {
+            transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .sidebar-collapsed {
+            width: 4.75rem !important;
+        }
+
+        .sidebar-collapsed .nav-label,
+        .sidebar-collapsed .nav-section-title,
+        .sidebar-collapsed .user-detail,
+        .sidebar-collapsed .brand-detail,
+        .sidebar-collapsed .nav-badge-count,
+        .sidebar-collapsed .pin-area,
+        .sidebar-collapsed .sidebar-divider-label {
+            display: none;
+        }
+
+        .sidebar-collapsed .nav-item {
+            justify-content: center;
+            padding: 0.5rem;
+            margin: 0.125rem 0.625rem;
+        }
+
+        .sidebar-collapsed .nav-item i {
+            font-size: 1.5rem;
+        }
+
+        .sidebar-collapsed .user-area {
+            justify-content: center;
+            padding: 0.875rem 0.5rem;
+        }
+
+        .sidebar-collapsed .user-avatar {
+            margin: 0;
+            width: 2.5rem;
+            height: 2.5rem;
+            font-size: 0.875rem;
+        }
+
+        .sidebar-collapsed .brand-area {
+            justify-content: center;
+            padding: 1.25rem 0.5rem;
+        }
+
+        .sidebar-collapsed .brand-icon {
+            margin: 0;
+            width: 2.75rem;
+            height: 2.75rem;
+            font-size: 1.35rem;
+        }
+
+        .sidebar-collapsed .pin-btn {
+            display: none;
+        }
+
+        .sidebar-collapsed .nav-section-divider {
+            margin: 0.375rem 0.75rem;
+        }
+
+        .sidebar-collapsed .search-wrapper {
+            display: none;
+        }
+
+        .sidebar-pinned .pin-icon {
+            opacity: 1;
+            transform: rotate(0deg);
+        }
+
+        /* ===== NAVIGATION ITEMS ===== */
+        .nav-item {
+            position: relative;
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            border-radius: 0.75rem;
+            overflow: hidden;
+        }
+
+        .nav-item::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 3px;
+            background: linear-gradient(180deg, #60a5fa, #3b82f6);
+            border-radius: 0 4px 4px 0;
+            transform: scaleY(0);
+            transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            transform-origin: center;
+        }
+
+        .nav-item-active {
+            background: rgba(59, 130, 246, 0.1) !important;
+            color: #60a5fa !important;
+        }
+
+        .nav-item-active::before {
+            transform: scaleY(1);
+        }
+
+        .nav-item:hover:not(.nav-item-active) {
+            background: rgba(255, 255, 255, 0.06);
+        }
+
+        /* ===== MAIN LAYOUT ===== */
+        .main-wrapper {
+            transition: margin-left 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        /* ===== TOPBAR ===== */
+        .topbar-island {
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .topbar-island:hover {
+            box-shadow: 0 16px 56px rgba(10, 10, 12, 0.06), 0 4px 12px rgba(10, 10, 12, 0.03);
+        }
+
+        /* ===== SEARCH INPUTS ===== */
+        .search-input:focus {
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+            border-color: rgba(59, 130, 246, 0.4);
+        }
+
+        /* ===== DOUBLE-BEZEL CARDS ===== */
+        .card-double-bezel {
+            transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .card-double-bezel:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 20px 56px rgba(10, 10, 12, 0.06), 0 8px 24px rgba(10, 10, 12, 0.03);
+        }
+
+        .card-double-bezel:active {
+            transform: translateY(0) scale(0.998);
+        }
+
+        /* ===== MAGNETIC BUTTONS ===== */
+        .btn-magnetic {
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .btn-magnetic:hover {
+            transform: translateY(-1px);
+        }
+
+        .btn-magnetic:active {
+            transform: translateY(0) scale(0.97);
+        }
+
+        /* ===== ICON NEST ===== */
+        .icon-nest {
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .btn-magnetic:hover .icon-nest {
+            transform: translateX(2px) scale(1.05);
+        }
+
+        /* ===== SCROLL REVEAL ===== */
+        .scroll-reveal {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1),
+                transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .scroll-reveal.revealed {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .scroll-reveal-delay-1 {
+            transition-delay: 0.06s;
+        }
+
+        .scroll-reveal-delay-2 {
+            transition-delay: 0.12s;
+        }
+
+        .scroll-reveal-delay-3 {
+            transition-delay: 0.18s;
+        }
+
+        .scroll-reveal-delay-4 {
+            transition-delay: 0.24s;
+        }
+
+        .scroll-reveal-delay-5 {
+            transition-delay: 0.3s;
+        }
+
+        .scroll-reveal-delay-6 {
+            transition-delay: 0.36s;
+        }
+
+        /* ===== BADGE DOT ===== */
+        .badge-dot {
+            width: 6px;
+            height: 6px;
+            display: inline-block;
+            border-radius: 50%;
+        }
+
+        /* ===== GLASS PANELS ===== */
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.65);
+            backdrop-filter: blur(24px) saturate(180%);
+            -webkit-backdrop-filter: blur(24px) saturate(180%);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.4), 0 4px 24px rgba(10, 10, 12, 0.04);
+        }
+
+        .glass-panel-heavy {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(32px) saturate(200%);
+            -webkit-backdrop-filter: blur(32px) saturate(200%);
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.5), 0 8px 32px rgba(10, 10, 12, 0.05);
+        }
+
+        .glass-sidebar {
+            background: rgba(12, 12, 15, 0.92);
+            backdrop-filter: blur(40px) saturate(150%);
+            -webkit-backdrop-filter: blur(40px) saturate(150%);
+            border-right: 1px solid rgba(255, 255, 255, 0.06);
+        }
+
+        /* ===== STATUS ANIMATIONS ===== */
+        .status-pulse {
+            animation: pulse-soft 3s ease-in-out infinite;
+        }
+
+        /* ===== SHIMMER ===== */
+        .shimmer-bg {
+            background: linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.04) 50%, transparent 100%);
+            background-size: 200% 100%;
+            animation: shimmer 3s ease-in-out infinite;
+        }
+
+        /* ===== SKELETON LOADING ===== */
+        .skeleton {
+            background: linear-gradient(90deg, #e7e7e9 25%, #d1d1d5 50%, #e7e7e9 75%);
+            background-size: 200% 100%;
+            animation: shimmer 1.5s ease-in-out infinite;
+            border-radius: 0.5rem;
+        }
+
+        /* ===== FOCUS STYLES (Accessibility) ===== */
+        :focus-visible {
+            outline: 2px solid #3b82f6;
+            outline-offset: 2px;
+            border-radius: 4px;
+        }
+
+        /* ===== FORM INPUTS ===== */
+        .form-input {
+            transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .form-input:focus {
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.12);
+            border-color: #3b82f6;
+            background-color: white;
+        }
+
+        /* ===== TOOLTIP ===== */
+        .tooltip {
+            position: relative;
+        }
+
+        .tooltip::after {
+            content: attr(data-tooltip);
+            position: absolute;
+            bottom: calc(100% + 8px);
+            left: 50%;
+            transform: translateX(-50%) translateY(4px);
+            padding: 6px 12px;
+            background: #1a1a1e;
+            color: white;
+            font-size: 11px;
+            font-weight: 500;
+            border-radius: 8px;
+            white-space: nowrap;
+            pointer-events: none;
+            opacity: 0;
+            transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+            z-index: 50;
+        }
+
+        .tooltip:hover::after {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+        }
+
+        /* ===== EYEBROW TAG ===== */
+        .eyebrow-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.375rem;
+            padding: 0.25rem 0.75rem;
+            border-radius: 99px;
+            font-size: 0.625rem;
+            font-weight: 600;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            background: rgba(59, 130, 246, 0.06);
+            color: #3b82f6;
+            border: 1px solid rgba(59, 130, 246, 0.12);
+        }
+
+        /* ===== METRIC VALUE ===== */
+        .metric-value {
+            font-family: 'Clash Display', 'Plus Jakarta Sans', system-ui, sans-serif;
+            font-weight: 600;
+            letter-spacing: -0.02em;
+            font-variant-numeric: tabular-nums;
+        }
+
+        /* ===== STAT RING ===== */
+        .stat-ring {
+            position: relative;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .stat-ring svg {
+            transform: rotate(-90deg);
+        }
+
+        .stat-ring circle {
+            transition: stroke-dashoffset 1.5s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        /* ===== PROGRESS BAR ANIMATION ===== */
+        .progress-bar {
+            transition: width 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        /* ===== HOVER LIFT ===== */
+        .hover-lift {
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .hover-lift:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 40px rgba(10, 10, 12, 0.06);
+        }
+
+        /* ===== TABLE ROW HOVER ===== */
+        .table-row-hover {
+            transition: all 0.2s ease;
+        }
+
+        .table-row-hover:hover {
+            background-color: rgba(59, 130, 246, 0.03);
+        }
+
+        /* ===== MOBILE RESPONSIVE ===== */
+        @media (max-width: 1024px) {
+            .sidebar-shell {
+                width: 4.75rem !important;
+            }
+
+            .sidebar-shell .nav-label,
+            .sidebar-shell .nav-section-title,
+            .sidebar-shell .user-detail,
+            .sidebar-shell .brand-detail,
+            .sidebar-shell .nav-badge-count,
+            .sidebar-shell .pin-area,
+            .sidebar-shell .sidebar-divider-label {
+                display: none;
+            }
+
+            .sidebar-shell .nav-item {
+                justify-content: center;
+                padding: 0.5rem;
+                margin: 0.125rem 0.625rem;
+            }
+
+            .sidebar-shell .nav-item i {
+                font-size: 1.5rem;
+            }
+
+            .sidebar-shell .user-area {
+                justify-content: center;
+                padding: 1rem 0.5rem;
+            }
+
+            .sidebar-shell .user-avatar {
+                margin: 0;
+                width: 2.25rem;
+                height: 2.25rem;
+            }
+
+            .sidebar-shell .brand-area {
+                justify-content: center;
+                padding: 1.25rem 0.5rem;
+            }
+
+            .sidebar-shell .brand-icon {
+                margin: 0;
+            }
+
+            .sidebar-shell .pin-btn {
+                display: none;
+            }
+
+            .sidebar-shell .nav-section-divider {
+                margin: 0.375rem 0.75rem;
+            }
+
+            .sidebar-shell .search-wrapper {
+                display: none;
+            }
+        }
+
+        @media (max-width: 640px) {
+            .topbar-island {
+                margin-left: 0 !important;
+                margin-right: 0 !important;
+                border-radius: 0 !important;
+            }
+        }
+
+        /* ===== NOISE OVERLAY ===== */
+        .noise-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 60;
+            pointer-events: none;
+            opacity: 0.018;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+            background-repeat: repeat;
+            background-size: 256px 256px;
+        }
+
+        /* ===== CUSTOM SCROLLBAR ===== */
+        ::-webkit-scrollbar {
+            width: 5px;
+            height: 5px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: rgba(0, 0, 0, 0.1);
+            border-radius: 99px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(0, 0, 0, 0.18);
+        }
+
+        /* ===== REDUCED MOTION ===== */
+        @media (prefers-reduced-motion: reduce) {
+
+            *,
+            *::before,
+            *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+
+            .scroll-reveal {
+                opacity: 1;
+                transform: none;
+            }
+
+            .card-double-bezel:hover {
+                transform: none;
+            }
+
+            .btn-magnetic:hover {
+                transform: none;
+            }
+        }
+
+        /* ===== PRINT STYLES ===== */
+        @media print {
+
+            .noise-overlay,
+            .sidebar-shell,
+            .topbar-island {
+                display: none !important;
+            }
+
+            .main-wrapper {
+                margin-left: 0 !important;
+            }
+        }
+    </style>
+</head>
+
+<body class="h-full bg-charcoal-50 antialiased">
+    <!-- Skip to content (Accessibility) -->
+    <a href="#main-content" class="skip-link">Skip to content</a>
+
+    <div class="noise-overlay"></div>
+
+    {% if user.is_authenticated %}
+    <div class="h-screen flex overflow-hidden bg-charcoal-50">
+
+        <!-- SIDEBAR — Double-Bezel Glass Architecture -->
+        <nav id="sidebar" class="sidebar-shell relative flex flex-col h-screen flex-shrink-0 z-30 glass-sidebar"
+            style="width: 16rem;" aria-label="Main navigation">
+
+            <!-- Brand — Logo & Title -->
+            <div class="brand-area flex flex-col items-start px-5 pt-5 relative">
+                <div class="flex items-center justify-between w-full">
+                    <!-- Collapsed Icon -->
+                    <div
+                        class="brand-icon hidden w-9 h-9 rounded-xl bg-gradient-to-br from-blue-600 to-blue-800 items-center justify-center flex-shrink-0 shadow-sm relative overflow-hidden">
+                        <i class="ph-bold ph-cpu text-white text-base"></i>
+</div>
+
+                    <!-- Expanded Logo -->
+                    <div class="brand-detail overflow-hidden flex-1 min-w-0 flex justify-center">
+                        <img src="{% static 'tanpa bg.png' %}" alt="PT Dahana (Persero)" class="h-20 w-auto"
+                            loading="lazy">
+</div>
+
+                    <button id="pinBtn"
+                        class="pin-btn flex-shrink-0 w-6 h-6 rounded-full flex items-center justify-center text-white/30 hover:text-blue-400 hover:bg-white/5 transition-all duration-300"
+                        title="Pin sidebar" aria-label="Toggle sidebar pin">
+                        <i class="ph-light ph-push-pin pin-icon text-xs transition-all duration-500"
+                            style="transform: rotate(-45deg);"></i>
+                    </button>
+</div>
+
+
+</div>
+
+            <!-- Inline Search -->
+            <div class="search-wrapper px-4 pb-3">
+                <div class="relative group">
+                    <i
+                        class="ph-light ph-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-white/30 text-sm group-focus-within:text-blue-400 transition-colors"></i>
+                    <input type="text" placeholder="Cari menu..."
+                        class="w-full pl-8 pr-3 py-2 text-xs bg-white/5 border border-white/10 rounded-xl text-white/70 placeholder-white/25 focus:outline-none focus:border-blue-500/40 focus:bg-white/[0.08] focus:ring-1 focus:ring-blue-500/20 transition-all duration-300"
+                        aria-label="Search menu">
+                    <span
+                        class="absolute right-2.5 top-1/2 -translate-y-1/2 text-[9px] text-white/20 bg-white/5 px-1.5 py-0.5 rounded font-medium border border-white/5">&#8984;K</span>
+</div>
+</div>
+
+            <!-- Navigation -->
+            <div class="flex-1 overflow-y-auto py-2 space-y-0.5 px-3 scrollbar-thin" role="navigation">
+                <!-- === MAIN === -->
+                <div
+                    class="nav-section-title text-[10px] font-extrabold text-white/35 tracking-[0.15em] mb-1.5 mt-4 px-3 uppercase">
+                    Main
+</div>
+
+                <a href="{% url 'dashboard:index' %}"
+                    class="nav-item flex items-center gap-3 px-3 py-2.5 text-sm font-medium {% if request.resolver_match.app_name == 'dashboard' %}nav-item-active text-blue-400{% else %}text-white/60 hover:text-white/80{% endif %}"
+                    {% if request.resolver_match.app_name == 'dashboard' %}aria-current="page" {% endif %}>
+                    <i class="ph-bold ph-squares-four text-lg flex-shrink-0"></i>
+                    <span class="nav-label">Executive Dashboard</span>
+                </a>
+
+                <a href="{% url 'core:asset_list' %}"
+                    class="nav-item flex items-center gap-3 px-3 py-2.5 text-sm font-medium {% if request.resolver_match.app_name == 'core' and request.resolver_match.url_name not in 'category_list category_create category_edit location_list location_create location_edit asset_import' %}nav-item-active text-blue-400{% else %}text-white/60 hover:text-white/80{% endif %}"
+                    {% if request.resolver_match.app_name == 'core' %}aria-current="page" {% endif %}>
+                    <i class="ph-bold ph-desktop-tower text-lg flex-shrink-0"></i>
+                    <span class="nav-label">Asset Register</span>
+                </a>
+
+                <a href="{% url 'core:asset_import' %}"
+                    class="nav-item flex items-center gap-3 px-3 py-2.5 text-sm font-medium {% if request.resolver_match.url_name == 'asset_import' %}nav-item-active text-blue-400{% else %}text-white/60 hover:text-white/80{% endif %}"
+                    {% if request.resolver_match.url_name == 'asset_import' %}aria-current="page" {% endif %}>
+                    <i class="ph-bold ph-upload-simple text-lg flex-shrink-0"></i>
+                    <span class="nav-label">Import Excel</span>
+                </a>
+
+                <!-- === AUDIT === -->
+
+                <a href="{% url 'audit:audit_list' %}"
+                    class="nav-item flex items-center gap-3 px-3 py-2.5 text-sm font-medium {% if request.resolver_match.app_name == 'audit' %}nav-item-active text-blue-400{% else %}text-white/60 hover:text-white/80{% endif %}"
+                    {% if request.resolver_match.app_name == 'audit' %}aria-current="page" {% endif %}>
+                    <i class="ph-bold ph-clock-counter-clockwise text-lg flex-shrink-0"></i>
+                    <span class="nav-label">Audit Trail</span>
+                </a>
+
+                <!-- === ADMINISTRATION === -->
+                <div
+                    class="nav-section-title text-[10px] font-extrabold text-white/35 tracking-[0.15em] mb-1.5 mt-5 px-3 uppercase">
+                    Administration
+</div>
+
+                {% if user.is_admin_it or user.is_superuser %}
+                <a href="{% url 'users:user_list' %}"
+                    class="nav-item flex items-center gap-3 px-3 py-2.5 text-sm font-medium {% if request.resolver_match.url_name|slice:':4' == 'user' %}nav-item-active text-blue-400{% else %}text-white/40 hover:text-white/60{% endif %}"
+                    {% if request.resolver_match.url_name|slice:':4' == 'user' %}aria-current="page" {% endif %}>
+                    <i class="ph-bold ph-users-three text-lg flex-shrink-0"></i>
+                    <span class="nav-label">Identity Access</span>
+                </a>
+                {% endif %}
+
+
+                {% if user.is_editor or user.is_admin_it or user.is_superuser %}
+                <a href="{% url 'core:category_list' %}"
+                    class="nav-item flex items-center gap-3 px-3 py-2.5 text-sm font-medium {% if request.resolver_match.url_name|slice:':8' == 'category' %}nav-item-active text-blue-400{% else %}text-white/40 hover:text-white/60{% endif %}"
+                    {% if request.resolver_match.url_name|slice:':8' == 'category' %}aria-current="page" {% endif %}>
+                    <i class="ph-bold ph-database text-lg flex-shrink-0"></i>
+                    <span class="nav-label">Master Data</span>
+                </a>
+
+                <a href="{% url 'core:location_list' %}"
+                    class="nav-item flex items-center gap-3 px-3 py-2.5 text-sm font-medium {% if request.resolver_match.url_name|slice:':8' == 'location' %}nav-item-active text-blue-400{% else %}text-white/40 hover:text-white/60{% endif %}"
+                    {% if request.resolver_match.url_name|slice:':8' == 'location' %}aria-current="page" {% endif %}>
+                    <i class="ph-bold ph-map-pin text-lg flex-shrink-0"></i>
+                    <span class="nav-label">Lokasi Aset</span>
+                </a>
+                {% endif %}
+
+</div>
+
+            <!-- User Area — Double-Bezel -->
+            <div class="user-area px-3 py-4 border-t border-white/5">
+                <div class="flex items-center gap-3">
+                    <div
+                        class="user-avatar w-9 h-9 rounded-squircle bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center text-xs font-bold text-white flex-shrink-0 shadow-lg shadow-blue-500/20 relative overflow-hidden">
+                        <div class="absolute inset-0 bg-gradient-to-tr from-white/15 to-transparent"></div>
+                        <span class="relative z-10">{{ user.email|first|upper }}</span>
+</div>
+                    <div class="user-detail flex-1 min-w-0">
+                        <p class="text-sm font-semibold text-white truncate leading-tight">{{
+                            user.get_full_name|default:user.email }}</p>
+                        <p class="text-[10px] text-white/40 font-medium truncate leading-tight mt-0.5">{{
+                            user.get_role_display }}</p>
+</div>
+                    <a href="{% url 'users:logout' %}"
+                        class="flex-shrink-0 w-7 h-7 rounded-full flex items-center justify-center text-white/30 hover:text-red-400 hover:bg-red-500/10 transition-all duration-300 tooltip"
+                        title="Logout" data-tooltip="Logout" aria-label="Logout">
+                        <i class="ph-light ph-sign-out text-sm"></i>
+                    </a>
+</div>
+</div>
+        </nav>
+
+        <!-- MAIN WRAPPER -->
+        <div id="mainWrapper" class="main-wrapper flex-1 flex flex-col h-screen overflow-hidden">
+            <!-- Topbar — Floating Island Glass -->
+            <header class="topbar-island flex-shrink-0 relative z-20 mx-5 mt-4 mb-2 rounded-2xl glass-panel-heavy"
+                role="banner">
+                <div class="flex items-center justify-between h-14 px-5">
+                    <div class="flex items-center gap-4">
+                        <h1 class="font-display text-base font-semibold text-charcoal-900 tracking-tight">{% block page_title %}Dashboard{% endblock %}</h1>
+                        <span
+                            class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200/50">
+                            <span class="status-pulse badge-dot bg-emerald-500 rounded-full inline-block"></span>
+                            Online
+                        </span>
+</div>
+                    <div class="flex items-center gap-2">
+                        <div class="relative hidden md:block group">
+                            <i
+                                class="ph-light ph-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-charcoal-300 text-sm group-focus-within:text-blue-500 transition-colors"></i>
+                            <input type="text" placeholder="Cari aset, pengguna..."
+                                class="search-input w-56 pl-9 pr-8 py-2 text-xs bg-charcoal-50/80 border border-charcoal-200/60 rounded-xl text-charcoal-700 placeholder-charcoal-400 focus:outline-none focus:w-72 transition-all duration-300"
+                                aria-label="Search assets and users">
+                            <span
+                                class="absolute right-3 top-1/2 -translate-y-1/2 text-[9px] text-charcoal-300 bg-charcoal-100/80 px-1.5 py-0.5 rounded font-medium border border-charcoal-200/50">/</span>
+</div>
+                        <a href="#"
+                            class="p-2 text-charcoal-400 hover:text-charcoal-600 hover:bg-charcoal-100 rounded-xl transition-all duration-300 tooltip"
+                            title="Bantuan" data-tooltip="Bantuan" aria-label="Help">
+                            <i class="ph-light ph-question text-lg"></i>
+                        </a>
+</div>
+</div>
+            </header>
+
+            <!-- GLOBAL ALERT — Kontrak Expiring -->
+            {% if expired_count > 0 or expiring_soon_count > 0 %}
+            <div class="flex-shrink-0 mx-5 mb-2" aria-live="polite">
+                <div
+                    class="rounded-xl bg-gradient-to-r from-red-500/10 to-transparent border border-red-200/40 px-4 py-2.5 flex items-center gap-3">
+                    <i class="ph-bold ph-warning-circle text-red-500 text-base flex-shrink-0"></i>
+                    <p class="text-xs font-medium text-red-700 flex-1">
+                        {% if expired_count > 0 %}<span class="font-bold">{{ expired_count }}</span> aset kontrak sudah
+                        berakhir.{% endif %}
+                        {% if expired_count > 0 and expiring_soon_count > 0 %} &middot; {% endif %}
+                        {% if expiring_soon_count > 0 %}<span class="font-bold">{{ expiring_soon_count }}</span> aset
+                        akan berakhir dalam 30 hari.{% endif %}
+                        <a href="{% url 'core:asset_list' %}?status=active"
+                            class="underline font-semibold hover:text-red-800 ml-1">Lihat detail</a>
+                    </p>
+                    <button onclick="this.closest('[aria-live]').remove()"
+                        class="flex-shrink-0 w-6 h-6 rounded-full flex items-center justify-center text-red-400 hover:text-red-600 hover:bg-red-50 transition-all"
+                        aria-label="Tutup">
+                        <i class="ph-light ph-x text-xs"></i>
+                    </button>
+</div>
+</div>
+{% endif %}
+
+
+            <!-- MAIN CONTENT -->
+            <main id="main-content" class="flex-1 overflow-auto px-6 lg:px-8 py-6" role="main">
+                {% if messages %}
+                <div class="fixed top-24 right-8 z-50 space-y-2.5" aria-live="polite">
+                    {% for message in messages %}
+                    <div class="animate-slide-down px-4 py-3 rounded-2xl shadow-ambient-lg text-white flex items-center gap-2.5 text-sm backdrop-blur-xl {% if message.tags == 'success' %}bg-emerald-600/90{% elif message.tags == 'error' %}bg-red-500/90{% else %}bg-blue-500/90{% endif %} border border-white/10"
+                        role="alert">
+                        <i class="ph-bold {% if message.tags == 'success' %}ph-check-circle{% elif message.tags == 'error' %}ph-warning-circle{% else %}ph-info{% endif %} text-base"></i>
+                        {{ message }}
+                    </div>
+                    {% endfor %}
+                </div>
+                {% endif %}
+{% else %}
+    <div class="min-h-screen flex items-center justify-center bg-gradient-to-br from-[#0a1628] via-[#0d1f3c] to-[#132f5e] relative overflow-hidden">
+        <!-- Background Mesh Gradient (Login) -->
+        <div class="absolute inset-0 overflow-hidden pointer-events-none">
+            <div class="absolute top-1/4 -left-32 w-96 h-96 bg-blue-500/10 rounded-full blur-3xl animate-float"></div>
+            <div class="absolute bottom-1/4 -right-32 w-80 h-80 bg-indigo-500/8 rounded-full blur-3xl animate-float" style="animation-delay: -3s;"></div>
+            <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-blue-600/5 rounded-full blur-3xl"></div>
+        </div>
+{% endif %}
+
+    {% block content %}{% endblock %}
+
+{% if user.is_authenticated %}
+            </main>
+        </div>
+    </div>
+    
+    {% if messages %}
+    <script>
+        setTimeout(() => {
+            document.querySelectorAll('.fixed.top-24.right-8 > div').forEach(el => {
+                el.style.transition = 'all 0.5s cubic-bezier(0.16, 1, 0.3, 1)';
+                el.style.opacity = '0';
+                el.style.transform = 'translateX(20px) scale(0.95)';
+                setTimeout(() => el.remove(), 500);
+            });
+        }, 4000);
+    </script>
+    {% endif %}
+    
+    <script>
+        // ===== SIDEBAR =====
+        const sidebar = document.getElementById('sidebar');
+        const pinBtn = document.getElementById('pinBtn');
+        const KEY = 'sidebar_pinned';
+        let hoverTimer = null;
+
+        function setCollapsed(c) {
+            sidebar.classList.toggle('sidebar-collapsed', c);
+        }
+
+        function isPinned() {
+            return localStorage.getItem(KEY) === '1';
+        }
+
+        function applyState() {
+            const p = isPinned();
+            sidebar.classList.toggle('sidebar-pinned', p);
+            setCollapsed(!p);
+            if (p) {
+                sidebar.style.removeProperty('width');
+            }
+        }
+
+        function togglePin(e) {
+            e.stopPropagation();
+            const next = !isPinned();
+            localStorage.setItem(KEY, next ? '1' : '0');
+            applyState();
+        }
+
+        sidebar.addEventListener('mouseenter', () => {
+            if (!isPinned()) {
+                clearTimeout(hoverTimer);
+                setCollapsed(false);
+            }
+        });
+
+        sidebar.addEventListener('mouseleave', () => {
+            if (!isPinned()) {
+                hoverTimer = setTimeout(() => setCollapsed(true), 400);
+            }
+        });
+
+        pinBtn.addEventListener('click', togglePin);
+        applyState();
+
+        // ===== SCROLL REVEAL =====
+        function initScrollReveal() {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('revealed');
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, {
+                threshold: 0.01,
+                rootMargin: '0px 0px -10px 0px'
+            });
+
+            document.querySelectorAll('.scroll-reveal').forEach(el => {
+                observer.observe(el);
+            });
+        }
+
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', initScrollReveal);
+        } else {
+            initScrollReveal();
+        }
+
+        // ===== KEYBOARD SHORTCUT =====
+        document.addEventListener('keydown', function (e) {
+            if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+                e.preventDefault();
+                const searchInput = document.querySelector('.search-input');
+                if (searchInput) searchInput.focus();
+            }
+        });
+
+        // ===== REDUCED MOTION CHECK =====
+        const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        if (prefersReducedMotion) {
+            document.querySelectorAll('.scroll-reveal').forEach(el => {
+                el.classList.add('revealed');
+            });
+        }
+    </script>
+
+    {% block extra_js %}{% endblock %}
+
+{% else %}
+    </div>
+{% endif %}
+</body>
+</html>

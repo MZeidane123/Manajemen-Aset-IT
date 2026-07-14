@@ -1,0 +1,505 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Asset Register — ASSETRACK PRO{% endblock %}
+{% block page_title %}Asset Register{% endblock %}
+
+{% block content %}
+<div style="zoom: 0.8;">
+    <!-- ===== HEADER — Double-Bezel ===== -->
+    <div class="scroll-reveal revealed mb-6">
+        <div class="rounded-2xl bg-white p-[1px] shadow-ambient ring-1 ring-black/[0.03]">
+            <div
+                class="rounded-[calc(1rem-1px)] bg-gradient-to-br from-white to-blue-50/20 px-6 py-5 shadow-[inset_0_1px_1px_rgba(255,255,255,0.9)]">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                    <div class="flex items-center gap-4">
+                        <div
+                            class="w-11 h-11 rounded-squircle bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center shadow-lg shadow-blue-500/25 relative overflow-hidden flex-shrink-0">
+                            <div class="absolute inset-0 bg-gradient-to-tr from-white/20 to-transparent"></div>
+                            <i class="ph-bold ph-desktop-tower text-white text-lg relative z-10"></i>
+                        </div>
+                        <div>
+                            <h1 class="font-display text-lg font-semibold text-charcoal-900 tracking-tight">Asset
+                                Register</h1>
+                            <p class="text-xs text-charcoal-400 mt-0.5">Data aset dari import Excel IT Asset Register
+                            </p>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-2.5">
+                        <a href="{% url 'core:asset_import' %}"
+                            class="btn-magnetic inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-gradient-to-r from-blue-600 to-blue-500 text-white text-xs font-semibold hover:from-blue-700 hover:to-blue-600 transition-all duration-300 shadow-lg shadow-blue-500/20">
+                            <i class="ph-bold ph-upload-simple text-sm"></i>
+                            Import Excel
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== SEARCH + TABS — Double-Bezel ===== -->
+    <div class="scroll-reveal scroll-reveal-delay-1 mb-6">
+        <div class="rounded-2xl bg-white p-[1px] shadow-ambient ring-1 ring-black/[0.03]">
+            <div class="rounded-[calc(1rem-1px)] bg-white px-6 py-5 shadow-[inset_0_1px_1px_rgba(255,255,255,0.8)]">
+                <!-- Search -->
+                <form method="get" id="filterForm"
+                    class="mb-4 flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
+                    <input type="hidden" name="tab" value="{{ active_tab }}">
+                    <div class="relative group max-w-md flex-1">
+                        <i
+                            class="ph-light ph-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-charcoal-300 text-sm group-focus-within:text-blue-500 transition-colors"></i>
+                        <input type="text" name="q" value="{{ query }}" placeholder="Cari aset..."
+                            class="form-input search-input w-full pl-9 pr-3 py-2.5 text-xs bg-charcoal-50/80 border border-charcoal-200/60 rounded-xl text-charcoal-700 placeholder-charcoal-400 focus:outline-none transition-all duration-300">
+                    </div>
+                    <button type="submit"
+                        class="btn-magnetic inline-flex items-center gap-1.5 px-4 py-2.5 rounded-xl text-xs font-semibold bg-blue-600 text-white hover:bg-blue-700 transition-all duration-300 shadow-sm flex-shrink-0">
+                        <i class="ph-bold ph-magnifying-glass text-sm"></i>
+                        Cari
+                    </button>
+                </form>
+
+                <!-- Tabs -->
+                <div class="flex items-center gap-1 p-1 bg-charcoal-50/80 rounded-xl ring-1 ring-charcoal-100/60 w-fit">
+                    <a href="?tab=physical{% if query %}&q={{ query }}{% endif %}"
+                        class="px-4 py-2 rounded-lg text-xs font-semibold transition-all duration-300 {% if active_tab == 'physical' %}bg-white text-blue-600 shadow-sm ring-1 ring-charcoal-200/40{% else %}text-charcoal-500 hover:text-charcoal-700{% endif %}">
+                        <i class="ph-bold ph-hard-drives text-sm mr-1.5"></i>Physical Asset
+                        <span
+                            class="ml-1.5 px-1.5 py-0.5 rounded-full text-[10px] {% if active_tab == 'physical' %}bg-blue-50 text-blue-600{% else %}bg-charcoal-200/60 text-charcoal-500{% endif %}">{{ physical_assets|length }}</span>
+                    </a>
+                    <a href="?tab=license{% if query %}&q={{ query }}{% endif %}"
+                        class="px-4 py-2 rounded-lg text-xs font-semibold transition-all duration-300 {% if active_tab == 'license' %}bg-white text-blue-600 shadow-sm ring-1 ring-charcoal-200/40{% else %}text-charcoal-500 hover:text-charcoal-700{% endif %}">
+                        <i class="ph-bold ph-license text-sm mr-1.5"></i>Software License
+                        <span
+                            class="ml-1.5 px-1.5 py-0.5 rounded-full text-[10px] {% if active_tab == 'license' %}bg-blue-50 text-blue-600{% else %}bg-charcoal-200/60 text-charcoal-500{% endif %}">{{ software_licenses|length }}</span>
+                    </a>
+                    <a href="?tab=notebook{% if query %}&q={{ query }}{% endif %}"
+                        class="px-4 py-2 rounded-lg text-xs font-semibold transition-all duration-300 {% if active_tab == 'notebook' %}bg-white text-blue-600 shadow-sm ring-1 ring-charcoal-200/40{% else %}text-charcoal-500 hover:text-charcoal-700{% endif %}">
+                        <i class="ph-bold ph-laptop text-sm mr-1.5"></i>Notebook Lease
+                        <span
+                            class="ml-1.5 px-1.5 py-0.5 rounded-full text-[10px] {% if active_tab == 'notebook' %}bg-blue-50 text-blue-600{% else %}bg-charcoal-200/60 text-charcoal-500{% endif %}">{{ notebook_leases|length }}</span>
+                    </a>
+                    <a href="?tab=application{% if query %}&q={{ query }}{% endif %}"
+                        class="px-4 py-2 rounded-lg text-xs font-semibold transition-all duration-300 {% if active_tab == 'application' %}bg-white text-blue-600 shadow-sm ring-1 ring-charcoal-200/40{% else %}text-charcoal-500 hover:text-charcoal-700{% endif %}">
+                        <i class="ph-bold ph-globe text-sm mr-1.5"></i>Software Aplikasi
+                        <span
+                            class="ml-1.5 px-1.5 py-0.5 rounded-full text-[10px] {% if active_tab == 'application' %}bg-blue-50 text-blue-600{% else %}bg-charcoal-200/60 text-charcoal-500{% endif %}">{{ software_applications|length }}</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== TAB: PHYSICAL ASSET ===== -->
+    {% if active_tab == 'physical' %}
+    <div class="scroll-reveal scroll-reveal-delay-2">
+        <div class="rounded-2xl bg-white p-[1px] shadow-ambient ring-1 ring-black/[0.03]">
+            <div
+                class="rounded-[calc(1rem-1px)] bg-white shadow-[inset_0_1px_1px_rgba(255,255,255,0.8)] overflow-hidden">
+                <div class="overflow-x-auto">
+                    <table class="w-full">
+                        <thead>
+                            <tr class="border-b border-charcoal-200 divide-x divide-charcoal-200">
+                                <th
+                                    class="w-12 px-5 py-3.5 text-left text-[10px] font-semibold text-charcoal-400 uppercase tracking-[0.08em]">
+                                    No</th>
+                                <th
+                                    class="px-5 py-3.5 text-left text-[10px] font-semibold text-charcoal-400 uppercase tracking-[0.08em]">
+                                    Asset Name</th>
+                                <th
+                                    class="px-5 py-3.5 text-left text-[10px] font-semibold text-charcoal-400 uppercase tracking-[0.08em]">
+                                    Brand</th>
+                                <th
+                                    class="px-5 py-3.5 text-left text-[10px] font-semibold text-charcoal-400 uppercase tracking-[0.08em]">
+                                    Model</th>
+                                <th
+                                    class="px-5 py-3.5 text-left text-[10px] font-semibold text-charcoal-400 uppercase tracking-[0.08em]">
+                                    Serial Number</th>
+                                <th
+                                    class="px-5 py-3.5 text-left text-[10px] font-semibold text-charcoal-400 uppercase tracking-[0.08em]">
+                                    Owner</th>
+                                <th
+                                    class="px-5 py-3.5 text-left text-[10px] font-semibold text-charcoal-400 uppercase tracking-[0.08em]">
+                                    Location</th>
+                                <th
+                                    class="px-5 py-3.5 text-left text-[10px] font-semibold text-charcoal-400 uppercase tracking-[0.08em]">
+                                    Asset No</th>
+                                <th
+                                    class="px-5 py-3.5 text-right text-[10px] font-semibold text-charcoal-400 uppercase tracking-[0.08em]">
+                                    Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-charcoal-200">
+                            {% for item in physical_assets %}
+                            <tr class="table-row-hover transition-all duration-200 divide-x divide-charcoal-200">
+                                <td class="px-5 py-3.5 text-sm font-semibold text-charcoal-400 tabular-nums">{{ forloop.counter }}</td>
+                                <td class="px-5 py-3.5">
+                                    <div class="flex items-center gap-3">
+                                        <div
+                                            class="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-500/10 to-blue-600/10 flex items-center justify-center flex-shrink-0 ring-1 ring-blue-200/30">
+                                            <i class="ph-bold ph-hard-drives text-blue-500 text-sm"></i>
+                                        </div>
+                                        <a href="{% url 'core:physicalasset_detail' item.pk %}"
+                                            class="text-sm font-medium text-charcoal-800 hover:text-blue-600 transition-colors duration-200">{{ item.asset_name }}</a>
+                                    </div>
+                                </td>
+                                <td class="px-5 py-3.5 text-sm text-charcoal-700">{{ item.brand|default:'—' }}</td>
+                                <td class="px-5 py-3.5 text-sm text-charcoal-700">{{ item.model_name|default:'—' }}</td>
+                                <td class="px-5 py-3.5 text-sm font-medium text-charcoal-800 tabular-nums">{{ item.serial_number }}</td>
+                                <td class="px-5 py-3.5 text-sm text-charcoal-700">{{ item.owner|default:'—' }}</td>
+                                <td class="px-5 py-3.5">
+                                    <span class="inline-flex items-center gap-1.5 text-sm text-charcoal-700">
+                                        <i class="ph-light ph-map-pin text-charcoal-400 text-xs"></i>
+                                        {{ item.location|default:'—' }}
+                                    </span>
+                                </td>
+                                <td class="px-5 py-3.5 text-sm text-charcoal-700 tabular-nums">{{ item.asset_number|default:'—' }}</td>
+                                <td class="px-5 py-3.5 text-right space-x-1">
+                                    <a href="{% url 'core:physicalasset_detail' item.pk %}"
+                                        class="w-9 h-9 rounded-xl inline-flex items-center justify-center text-blue-600 bg-blue-50 hover:bg-blue-100 transition-all duration-200"
+                                        title="Detail">
+                                        <i class="ph-bold ph-eye text-base"></i>
+                                    </a>
+                                    <a href="{% url 'core:physicalasset_edit' item.pk %}"
+                                        class="w-9 h-9 rounded-xl inline-flex items-center justify-center text-amber-600 bg-amber-50 hover:bg-amber-100 transition-all duration-200"
+                                        title="Edit">
+                                        <i class="ph-bold ph-pencil-simple text-base"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                            {% empty %}
+                            <tr>
+                                <td colspan="9" class="px-5 py-16 text-center">
+                                    <div
+                                        class="w-16 h-16 rounded-2xl bg-charcoal-50 flex items-center justify-center mx-auto mb-4 ring-1 ring-charcoal-100">
+                                        <i class="ph-bold ph-database text-charcoal-300 text-2xl"></i>
+                                    </div>
+                                    <p class="font-display text-base font-semibold text-charcoal-700">Belum ada data
+                                        Physical Asset</p>
+                                    <p class="text-sm text-charcoal-400 mt-1.5">Import file Excel untuk menambah data.
+                                    </p>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+
+    <!-- ===== TAB: SOFTWARE LICENSE ===== -->
+    {% if active_tab == 'license' %}
+    <div class="scroll-reveal scroll-reveal-delay-2">
+        <div class="rounded-2xl bg-white p-[1px] shadow-ambient ring-1 ring-black/[0.03]">
+            <div
+                class="rounded-[calc(1rem-1px)] bg-white shadow-[inset_0_1px_1px_rgba(255,255,255,0.8)] overflow-hidden">
+                <div class="overflow-x-auto">
+                    <table class="w-full">
+                        <thead>
+                            <tr class="border-b border-charcoal-200 divide-x divide-charcoal-200">
+                                <th
+                                    class="w-12 px-5 py-3.5 text-left text-[10px] font-semibold text-charcoal-400 uppercase tracking-[0.08em]">
+                                    No</th>
+                                <th
+                                    class="px-5 py-3.5 text-left text-[10px] font-semibold text-charcoal-400 uppercase tracking-[0.08em]">
+                                    Nama Software</th>
+                                <th
+                                    class="px-5 py-3.5 text-left text-[10px] font-semibold text-charcoal-400 uppercase tracking-[0.08em]">
+                                    Jenis Lisensi</th>
+                                <th
+                                    class="px-5 py-3.5 text-left text-[10px] font-semibold text-charcoal-400 uppercase tracking-[0.08em]">
+                                    Vendor</th>
+                                <th
+                                    class="px-5 py-3.5 text-left text-[10px] font-semibold text-charcoal-400 uppercase tracking-[0.08em]">
+                                    Nomor Lisensi</th>
+                                <th
+                                    class="px-5 py-3.5 text-left text-[10px] font-semibold text-charcoal-400 uppercase tracking-[0.08em]">
+                                    Jumlah</th>
+                                <th
+                                    class="px-5 py-3.5 text-left text-[10px] font-semibold text-charcoal-400 uppercase tracking-[0.08em]">
+                                    Status</th>
+                                <th
+                                    class="px-5 py-3.5 text-right text-[10px] font-semibold text-charcoal-400 uppercase tracking-[0.08em]">
+                                    Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-charcoal-200">
+                            {% for item in software_licenses %}
+                            <tr class="table-row-hover transition-all duration-200 divide-x divide-charcoal-200">
+                                <td class="px-5 py-3.5 text-sm font-semibold text-charcoal-400 tabular-nums">{{ forloop.counter }}</td>
+                                <td class="px-5 py-3.5">
+                                    <div class="flex items-center gap-3">
+                                        <div
+                                            class="w-8 h-8 rounded-lg bg-gradient-to-br from-emerald-500/10 to-emerald-600/10 flex items-center justify-center flex-shrink-0 ring-1 ring-emerald-200/30">
+                                            <i class="ph-bold ph-license text-emerald-500 text-sm"></i>
+                                        </div>
+                                        <a href="{% url 'core:softwarelicense_detail' item.pk %}"
+                                            class="text-sm font-medium text-charcoal-800 hover:text-blue-600 transition-colors duration-200">{{ item.name }}</a>
+                                    </div>
+                                </td>
+                                <td class="px-5 py-3.5 text-sm text-charcoal-700">{{ item.license_type|default:'—' }}
+                                </td>
+                                <td class="px-5 py-3.5 text-sm text-charcoal-700">{{ item.vendor|default:'—' }}</td>
+                                <td class="px-5 py-3.5 text-sm text-charcoal-700 tabular-nums">{{ item.license_number|default:'—' }}</td>
+                                <td class="px-5 py-3.5 text-sm text-charcoal-700">{{ item.quantity|default:'—' }}</td>
+                                <td class="px-5 py-3.5">
+                                    {% if item.status %}
+                                    <span
+                                        class="inline-flex items-center gap-1.5 px-2.5 py-1 text-[10px] font-semibold rounded-full {% if item.status|upper == 'AKTIF' or item.status|upper == 'ACTIVE' %}bg-emerald-50 text-emerald-700 ring-1 ring-emerald-200/50{% elif item.status|upper == 'EXPIRED' %}bg-red-50 text-red-600 ring-1 ring-red-200/50{% else %}bg-charcoal-100 text-charcoal-600 ring-1 ring-charcoal-200/50{% endif %}">
+                                        {{ item.status }}
+                                    </span>
+                                    {% else %}
+                                    <span class="text-xs text-charcoal-400">—</span>
+                                    {% endif %}
+                                </td>
+                                <td class="px-5 py-3.5 text-right space-x-1">
+                                    <a href="{% url 'core:softwarelicense_detail' item.pk %}"
+                                        class="w-9 h-9 rounded-xl inline-flex items-center justify-center text-blue-600 bg-blue-50 hover:bg-blue-100 transition-all duration-200"
+                                        title="Detail">
+                                        <i class="ph-bold ph-eye text-base"></i>
+                                    </a>
+                                    <a href="{% url 'core:softwarelicense_edit' item.pk %}"
+                                        class="w-9 h-9 rounded-xl inline-flex items-center justify-center text-amber-600 bg-amber-50 hover:bg-amber-100 transition-all duration-200"
+                                        title="Edit">
+                                        <i class="ph-bold ph-pencil-simple text-base"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                            {% empty %}
+                            <tr>
+                                <td colspan="8" class="px-5 py-16 text-center">
+                                    <div
+                                        class="w-16 h-16 rounded-2xl bg-charcoal-50 flex items-center justify-center mx-auto mb-4 ring-1 ring-charcoal-100">
+                                        <i class="ph-bold ph-database text-charcoal-300 text-2xl"></i>
+                                    </div>
+                                    <p class="font-display text-base font-semibold text-charcoal-700">Belum ada data
+                                        Software License</p>
+                                    <p class="text-sm text-charcoal-400 mt-1.5">Import file Excel untuk menambah data.
+                                    </p>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+
+    <!-- ===== TAB: NOTEBOOK LEASE ===== -->
+    {% if active_tab == 'notebook' %}
+    <div class="scroll-reveal scroll-reveal-delay-2">
+        <div class="rounded-2xl bg-white p-[1px] shadow-ambient ring-1 ring-black/[0.03]">
+            <div
+                class="rounded-[calc(1rem-1px)] bg-white shadow-[inset_0_1px_1px_rgba(255,255,255,0.8)] overflow-hidden">
+                <div class="overflow-x-auto">
+                    <table class="w-full">
+                        <thead>
+                            <tr class="border-b border-charcoal-200 divide-x divide-charcoal-200">
+                                <th
+                                    class="w-12 px-5 py-3.5 text-left text-[10px] font-semibold text-charcoal-400 uppercase tracking-[0.08em]">
+                                    No</th>
+                                <th
+                                    class="px-5 py-3.5 text-left text-[10px] font-semibold text-charcoal-400 uppercase tracking-[0.08em]">
+                                    Tipe Perangkat</th>
+                                <th
+                                    class="px-5 py-3.5 text-left text-[10px] font-semibold text-charcoal-400 uppercase tracking-[0.08em]">
+                                    User</th>
+                                <th
+                                    class="px-5 py-3.5 text-left text-[10px] font-semibold text-charcoal-400 uppercase tracking-[0.08em]">
+                                    Serial Number</th>
+                                <th
+                                    class="px-5 py-3.5 text-left text-[10px] font-semibold text-charcoal-400 uppercase tracking-[0.08em]">
+                                    Nomor Aset</th>
+                                <th
+                                    class="px-5 py-3.5 text-left text-[10px] font-semibold text-charcoal-400 uppercase tracking-[0.08em]">
+                                    Vendor</th>
+                                <th
+                                    class="px-5 py-3.5 text-left text-[10px] font-semibold text-charcoal-400 uppercase tracking-[0.08em]">
+                                    Status</th>
+                                <th
+                                    class="px-5 py-3.5 text-right text-[10px] font-semibold text-charcoal-400 uppercase tracking-[0.08em]">
+                                    Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-charcoal-200">
+                            {% for item in notebook_leases %}
+                            <tr class="table-row-hover transition-all duration-200 divide-x divide-charcoal-200">
+                                <td class="px-5 py-3.5 text-sm font-semibold text-charcoal-400 tabular-nums">{{ forloop.counter }}</td>
+                                <td class="px-5 py-3.5">
+                                    <div class="flex items-center gap-3">
+                                        <div
+                                            class="w-8 h-8 rounded-lg bg-gradient-to-br from-violet-500/10 to-violet-600/10 flex items-center justify-center flex-shrink-0 ring-1 ring-violet-200/30">
+                                            <i class="ph-bold ph-laptop text-violet-500 text-sm"></i>
+                                        </div>
+                                        <a href="{% url 'core:notebooklease_detail' item.pk %}"
+                                            class="text-sm font-medium text-charcoal-800 hover:text-blue-600 transition-colors duration-200">{{ item.device_type }}</a>
+                                    </div>
+                                </td>
+                                <td class="px-5 py-3.5 text-sm text-charcoal-700">{{ item.user_name|default:'—' }}</td>
+                                <td class="px-5 py-3.5 text-sm font-medium text-charcoal-800 tabular-nums">{{ item.serial_number|default:'—' }}</td>
+                                <td class="px-5 py-3.5 text-sm text-charcoal-700 tabular-nums">{{ item.asset_number|default:'—' }}</td>
+                                <td class="px-5 py-3.5 text-sm text-charcoal-700">{{ item.vendor_provider|default:'—' }}
+                                </td>
+                                <td class="px-5 py-3.5">
+                                    {% if item.status %}
+                                    <span
+                                        class="inline-flex items-center gap-1.5 px-2.5 py-1 text-[10px] font-semibold rounded-full {% if item.status == 'active' %}bg-emerald-50 text-emerald-700 ring-1 ring-emerald-200/50{% else %}bg-charcoal-100 text-charcoal-600 ring-1 ring-charcoal-200/50{% endif %}">
+                                        {{ item.get_status_display }}
+                                    </span>
+                                    {% else %}
+                                    <span class="text-xs text-charcoal-400">—</span>
+                                    {% endif %}
+                                </td>
+                                <td class="px-5 py-3.5 text-right space-x-1">
+                                    <a href="{% url 'core:notebooklease_detail' item.pk %}"
+                                        class="w-9 h-9 rounded-xl inline-flex items-center justify-center text-blue-600 bg-blue-50 hover:bg-blue-100 transition-all duration-200"
+                                        title="Detail">
+                                        <i class="ph-bold ph-eye text-base"></i>
+                                    </a>
+                                    <a href="{% url 'core:notebooklease_edit' item.pk %}"
+                                        class="w-9 h-9 rounded-xl inline-flex items-center justify-center text-amber-600 bg-amber-50 hover:bg-amber-100 transition-all duration-200"
+                                        title="Edit">
+                                        <i class="ph-bold ph-pencil-simple text-base"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                            {% empty %}
+                            <tr>
+                                <td colspan="8" class="px-5 py-16 text-center">
+                                    <div
+                                        class="w-16 h-16 rounded-2xl bg-charcoal-50 flex items-center justify-center mx-auto mb-4 ring-1 ring-charcoal-100">
+                                        <i class="ph-bold ph-database text-charcoal-300 text-2xl"></i>
+                                    </div>
+                                    <p class="font-display text-base font-semibold text-charcoal-700">Belum ada data
+                                        Notebook Lease</p>
+                                    <p class="text-sm text-charcoal-400 mt-1.5">Import file Excel untuk menambah data.
+                                    </p>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+
+    <!-- ===== TAB: SOFTWARE APPLICATION ===== -->
+    {% if active_tab == 'application' %}
+    <div class="scroll-reveal scroll-reveal-delay-2">
+        <div class="rounded-2xl bg-white p-[1px] shadow-ambient ring-1 ring-black/[0.03]">
+            <div
+                class="rounded-[calc(1rem-1px)] bg-white shadow-[inset_0_1px_1px_rgba(255,255,255,0.8)] overflow-hidden">
+                <div class="overflow-x-auto">
+                    <table class="w-full">
+                        <thead>
+                            <tr class="border-b border-charcoal-200 divide-x divide-charcoal-200">
+                                <th
+                                    class="w-12 px-5 py-3.5 text-left text-[10px] font-semibold text-charcoal-400 uppercase tracking-[0.08em]">
+                                    No</th>
+                                <th
+                                    class="px-5 py-3.5 text-left text-[10px] font-semibold text-charcoal-400 uppercase tracking-[0.08em]">
+                                    Asset Name</th>
+                                <th
+                                    class="px-5 py-3.5 text-left text-[10px] font-semibold text-charcoal-400 uppercase tracking-[0.08em]">
+                                    IP Address</th>
+                                <th
+                                    class="px-5 py-3.5 text-left text-[10px] font-semibold text-charcoal-400 uppercase tracking-[0.08em]">
+                                    Sub-Classification</th>
+                                <th
+                                    class="px-5 py-3.5 text-left text-[10px] font-semibold text-charcoal-400 uppercase tracking-[0.08em]">
+                                    Owner</th>
+                                <th
+                                    class="px-5 py-3.5 text-left text-[10px] font-semibold text-charcoal-400 uppercase tracking-[0.08em]">
+                                    Location</th>
+                                <th
+                                    class="px-5 py-3.5 text-center text-[10px] font-semibold text-charcoal-400 uppercase tracking-[0.08em]">
+                                    C - I - A</th>
+                                <th
+                                    class="px-5 py-3.5 text-right text-[10px] font-semibold text-charcoal-400 uppercase tracking-[0.08em]">
+                                    Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-charcoal-200">
+                            {% for item in software_applications %}
+                            <tr class="table-row-hover transition-all duration-200 divide-x divide-charcoal-200">
+                                <td class="px-5 py-3.5 text-sm font-semibold text-charcoal-400 tabular-nums">{{ forloop.counter }}</td>
+                                <td class="px-5 py-3.5">
+                                    <div class="flex items-center gap-3">
+                                        <div
+                                            class="w-8 h-8 rounded-lg bg-gradient-to-br from-violet-500/10 to-violet-600/10 flex items-center justify-center flex-shrink-0 ring-1 ring-violet-200/30">
+                                            <i class="ph-bold ph-globe text-violet-500 text-sm"></i>
+                                        </div>
+                                        <a href="{% url 'core:softwareapplication_detail' item.pk %}"
+                                            class="text-sm font-medium text-charcoal-800 hover:text-blue-600 transition-colors duration-200">{{ item.asset_name }}</a>
+                                    </div>
+                                </td>
+                                <td class="px-5 py-3.5 text-sm text-charcoal-700 tabular-nums">{{ item.ip_address|default:'—' }}</td>
+                                <td class="px-5 py-3.5 text-sm text-charcoal-700">{{ item.sub_class|default:'—' }}</td>
+                                <td class="px-5 py-3.5 text-sm text-charcoal-700">{{ item.owner|default:'—' }}</td>
+                                <td class="px-5 py-3.5">
+                                    <span class="inline-flex items-center gap-1.5 text-sm text-charcoal-700">
+                                        <i class="ph-light ph-map-pin text-charcoal-400 text-xs"></i>
+                                        {{ item.location|default:'—' }}
+                                    </span>
+                                </td>
+                                <td class="px-5 py-3.5 text-center text-sm font-medium text-charcoal-700 tabular-nums">
+                                    {{ item.confidentiality|default:'-' }} &middot; {{ item.integrity|default:'-' }}
+                                    &middot; {{ item.availability|default:'-' }}
+                                </td>
+                                <td class="px-5 py-3.5 text-right space-x-1">
+                                    <a href="{% url 'core:softwareapplication_detail' item.pk %}"
+                                        class="w-9 h-9 rounded-xl inline-flex items-center justify-center text-blue-600 bg-blue-50 hover:bg-blue-100 transition-all duration-200"
+                                        title="Detail">
+                                        <i class="ph-bold ph-eye text-base"></i>
+                                    </a>
+                                    <a href="{% url 'core:softwareapplication_edit' item.pk %}"
+                                        class="w-9 h-9 rounded-xl inline-flex items-center justify-center text-amber-600 bg-amber-50 hover:bg-amber-100 transition-all duration-200"
+                                        title="Edit">
+                                        <i class="ph-bold ph-pencil-simple text-base"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                            {% empty %}
+                            <tr>
+                                <td colspan="8" class="px-5 py-16 text-center">
+                                    <div
+                                        class="w-16 h-16 rounded-2xl bg-charcoal-50 flex items-center justify-center mx-auto mb-4 ring-1 ring-charcoal-100">
+                                        <i class="ph-bold ph-database text-charcoal-300 text-2xl"></i>
+                                    </div>
+                                    <p class="font-display text-base font-semibold text-charcoal-700">Belum ada data
+                                        Software Aplikasi</p>
+                                    <p class="text-sm text-charcoal-400 mt-1.5">Import file Excel untuk menambah data.
+                                    </p>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    (function () {
+        const form = document.getElementById('filterForm');
+        const searchInput = form.querySelector('input[name="q"]');
+        let searchTimer;
+
+        searchInput.addEventListener('input', function () {
+            clearTimeout(searchTimer);
+            searchTimer = setTimeout(function () {
+                form.submit();
+            }, 500);
+        });
+    })();
+</script>
+{% endblock %}

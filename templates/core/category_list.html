@@ -1,0 +1,91 @@
+{% extends 'base.html' %}
+{% block title %}Kategori — ASSETRACK PRO{% endblock %}
+{% block page_title %}Master Data — Kategori{% endblock %}
+
+{% block content %}
+<!-- ===== HEADER ===== -->
+<div class="scroll-reveal revealed mb-6">
+    <div class="rounded-2xl bg-white p-[1px] shadow-ambient ring-1 ring-black/[0.03]">
+        <div class="rounded-[calc(1rem-1px)] bg-white px-6 py-5 shadow-[inset_0_1px_1px_rgba(255,255,255,0.8)]">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                <div class="flex items-center gap-4">
+                    <div class="w-11 h-11 rounded-squircle bg-gradient-to-br from-violet-500 to-violet-600 flex items-center justify-center shadow-lg shadow-violet-500/25 relative overflow-hidden flex-shrink-0">
+                        <div class="absolute inset-0 bg-gradient-to-tr from-white/20 to-transparent"></div>
+                        <i class="ph-bold ph-tag text-white text-lg relative z-10"></i>
+                    </div>
+                    <div>
+                        <div class="flex items-center gap-2.5">
+                            <h1 class="font-display text-lg font-semibold text-charcoal-900 tracking-tight">Kategori</h1>
+                            <span class="eyebrow-tag">{{ categories|length }} item</span>
+                        </div>
+                        <p class="text-xs text-charcoal-400 mt-0.5">Kelola kategori perangkat (Laptop, Server, Access Point, dll)</p>
+                    </div>
+                </div>
+                <a href="{% url 'core:category_create' %}" class="btn-magnetic inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-gradient-to-r from-blue-600 to-blue-500 text-white text-xs font-semibold hover:from-blue-700 hover:to-blue-600 transition-all duration-300 shadow-lg shadow-blue-500/20 active:scale-[0.98]">
+                    <i class="ph-bold ph-plus text-sm"></i>
+                    Tambah Kategori
+                    <span class="icon-nest w-5 h-5 rounded-full bg-white/20 flex items-center justify-center">
+                        <i class="ph-bold ph-arrow-right text-[10px]"></i>
+                    </span>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ===== TABLE ===== -->
+<div class="scroll-reveal scroll-reveal-delay-1">
+    <div class="rounded-2xl bg-white p-[1px] shadow-ambient ring-1 ring-black/[0.03]">
+        <div class="rounded-[calc(1rem-1px)] bg-white shadow-[inset_0_1px_1px_rgba(255,255,255,0.8)] overflow-hidden">
+            <table class="w-full">
+                <thead>
+                    <tr class="border-b border-charcoal-100/60">
+                        <th class="px-5 py-3.5 text-left text-[10px] font-semibold text-charcoal-400 uppercase tracking-[0.08em]">Nama</th>
+                        <th class="px-5 py-3.5 text-left text-[10px] font-semibold text-charcoal-400 uppercase tracking-[0.08em]">Deskripsi</th>
+                        <th class="px-5 py-3.5 text-right text-[10px] font-semibold text-charcoal-400 uppercase tracking-[0.08em]">Aksi</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-charcoal-50">
+                    {% for cat in categories %}
+                    <tr class="group transition-all duration-300 hover:bg-charcoal-50/40">
+                        <td class="px-5 py-4">
+                            <div class="flex items-center gap-3">
+                                <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-violet-500/10 to-violet-600/10 flex items-center justify-center ring-1 ring-violet-200/30">
+                                    <i class="ph-bold ph-tag text-violet-500 text-sm"></i>
+                                </div>
+                                <span class="font-medium text-charcoal-800">{{ cat.name }}</span>
+                            </div>
+                        </td>
+                        <td class="px-5 py-4 text-sm text-charcoal-500">{{ cat.description|default:'—' }}</td>
+                        <td class="px-5 py-4 text-right">
+                            <div class="flex items-center justify-end gap-1">
+                                <a href="{% url 'core:category_edit' cat.pk %}" class="w-8 h-8 rounded-xl flex items-center justify-center text-amber-600 bg-amber-50 hover:bg-amber-100 transition-all duration-300" title="Edit">
+                                    <i class="ph-bold ph-pencil text-sm"></i>
+                                </a>
+                                <a href="{% url 'core:category_delete' cat.pk %}" class="w-8 h-8 rounded-xl flex items-center justify-center text-red-600 bg-red-50 hover:bg-red-100 transition-all duration-300" title="Hapus">
+                                    <i class="ph-bold ph-trash text-sm"></i>
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="3" class="px-5 py-16 text-center">
+                            <div class="w-16 h-16 rounded-2xl bg-charcoal-50 flex items-center justify-center mx-auto mb-4">
+                                <i class="ph-bold ph-tag text-charcoal-300 text-2xl"></i>
+                            </div>
+                            <p class="font-display text-base font-semibold text-charcoal-700">Belum ada kategori</p>
+                            <p class="text-sm text-charcoal-400 mt-1">Mulai dengan menambahkan kategori pertama.</p>
+                            <a href="{% url 'core:category_create' %}" class="btn-magnetic inline-flex items-center gap-2 mt-5 px-5 py-2.5 rounded-xl bg-gradient-to-r from-blue-600 to-blue-500 text-white text-xs font-semibold hover:from-blue-700 hover:to-blue-600 transition-all duration-300 shadow-lg shadow-blue-500/20">
+                                <i class="ph-bold ph-plus text-sm"></i>
+                                Tambah Kategori Baru
+                            </a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+{% block title %}Hapus User — ASSETRACK PRO{% endblock %}
+{% block page_title %}Hapus User{% endblock %}
+
+{% block content %}
+<div class="max-w-lg mx-auto mt-12">
+    <div class="rounded-2xl bg-white p-[1px] shadow-ambient ring-1 ring-black/[0.03] card-double-bezel">
+        <div class="rounded-[calc(1rem-1px)] bg-white p-8 shadow-[inset_0_1px_1px_rgba(255,255,255,0.8)] text-center">
+            <div class="w-16 h-16 rounded-2xl bg-red-50 flex items-center justify-center mx-auto mb-5 ring-1 ring-red-200/50">
+                <i class="ph-bold ph-trash text-red-500 text-2xl"></i>
+            </div>
+            <h3 class="font-display text-lg font-semibold text-charcoal-900 mb-2">Hapus User</h3>
+            <p class="text-sm text-charcoal-500 mb-1">Yakin ingin menghapus user ini?</p>
+            <p class="text-base font-semibold text-charcoal-800 mb-1">{{ user.email }}</p>
+            <p class="text-xs text-charcoal-400 mb-6">{{ user.get_full_name|default:'-' }} · {{ user.get_role_display }}</p>
+            <div class="bg-amber-50/80 border border-amber-200/60 rounded-xl px-4 py-3 mb-6 text-left">
+                <div class="flex items-start gap-2.5">
+                    <i class="ph-bold ph-warning text-amber-500 text-sm mt-0.5"></i>
+                    <div>
+                        <p class="text-xs font-semibold text-amber-800">Perhatian</p>
+                        <p class="text-xs text-amber-700/80 mt-0.5">Semua Change Request milik user ini akan ikut terhapus.</p>
+                    </div>
+                </div>
+            </div>
+            <form method="post" class="flex items-center justify-center gap-3">
+                {% csrf_token %}
+                <a href="{% url 'users:user_list' %}" class="px-5 py-2.5 rounded-xl text-sm font-semibold text-charcoal-600 bg-charcoal-50 hover:bg-charcoal-100 ring-1 ring-charcoal-200/50 transition-all duration-300">
+                    Batal
+                </a>
+                <button type="submit" class="px-5 py-2.5 rounded-xl text-sm font-semibold text-white bg-red-500 hover:bg-red-600 shadow-lg shadow-red-500/20 transition-all duration-300 active:scale-[0.98]">
+                    <i class="ph-bold ph-trash text-sm mr-1.5"></i>Hapus
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

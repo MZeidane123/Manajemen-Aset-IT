@@ -1,0 +1,157 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}{{ item.name }} — ASSETRACK PRO{% endblock %}
+{% block page_title %}Software License Detail{% endblock %}
+
+{% block content %}
+
+<!-- Header -->
+<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-5">
+    <div>
+        <p class="text-xs text-charcoal-400 mb-1">
+            <a href="{% url 'core:asset_list' %}?tab=license" class="hover:text-blue-600 transition-colors">Daftar Aset</a>
+            <span class="mx-1.5">›</span> <span>Software License</span>
+        </p>
+        <div class="flex items-center gap-3 flex-wrap">
+            <h1 class="text-2xl font-bold text-charcoal-900 tracking-tight">{{ item.name }}</h1>
+            {% if item.status %}
+            <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-bold
+                {% if item.status|lower == 'aktif' or item.status|lower == 'active' %}bg-emerald-100 text-emerald-700{% else %}bg-red-100 text-red-700{% endif %}">
+                <span class="w-1.5 h-1.5 rounded-full {% if item.status|lower == 'aktif' or item.status|lower == 'active' %}bg-emerald-500{% else %}bg-red-500{% endif %}"></span>
+                {{ item.status }}
+            </span>
+            {% endif %}
+        </div>
+    </div>
+    <div class="flex items-center gap-2">
+        <a href="{% url 'core:softwarelicense_edit' item.pk %}" class="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold transition-all duration-200 shadow-sm">
+            <i class="ph-bold ph-pencil-simple"></i> Edit Asset
+        </a>
+        <a href="{% url 'core:asset_list' %}?tab=license" class="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl border border-charcoal-200 text-charcoal-600 hover:bg-charcoal-50 text-xs font-medium transition-all duration-200">
+            <i class="ph-bold ph-arrow-left"></i> Kembali
+        </a>
+    </div>
+</div>
+
+<!-- Top Row: License Info | Details -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+
+    <!-- License Key Card -->
+    <div class="bg-white rounded-2xl border border-charcoal-100 shadow-sm p-5">
+        <h2 class="flex items-center gap-2 text-sm font-bold text-charcoal-800 mb-4">
+            <i class="ph-bold ph-certificate text-violet-500"></i> License Information
+        </h2>
+        <div class="space-y-3">
+            <div>
+                <p class="text-[10px] font-bold text-charcoal-400 uppercase tracking-wider mb-1">Nama Software</p>
+                <p class="text-sm font-semibold text-charcoal-800">{{ item.name }}</p>
+            </div>
+            <div>
+                <p class="text-[10px] font-bold text-charcoal-400 uppercase tracking-wider mb-1">Vendor</p>
+                <p class="text-sm font-medium text-charcoal-800">{{ item.vendor|default:'—' }}</p>
+            </div>
+            <div>
+                <p class="text-[10px] font-bold text-charcoal-400 uppercase tracking-wider mb-1">Tipe Lisensi</p>
+                <p class="text-sm font-medium text-charcoal-800">{{ item.license_type|default:'—' }}</p>
+            </div>
+            <div>
+                <p class="text-[10px] font-bold text-charcoal-400 uppercase tracking-wider mb-2">License Number / Key</p>
+                <div class="bg-charcoal-50 border border-charcoal-200 rounded-xl px-3 py-2.5 font-mono text-xs text-charcoal-700 break-all leading-relaxed">
+                    {{ item.license_number|default:'—' }}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Details Card -->
+    <div class="bg-white rounded-2xl border border-charcoal-100 shadow-sm p-5">
+        <h2 class="flex items-center gap-2 text-sm font-bold text-charcoal-800 mb-4">
+            <i class="ph-bold ph-map-pin text-blue-500"></i> Detail Instalasi
+        </h2>
+        <div class="grid grid-cols-2 gap-x-4 gap-y-3">
+            <div>
+                <p class="text-[10px] font-bold text-charcoal-400 uppercase tracking-wider">Jumlah</p>
+                <p class="text-sm font-medium text-charcoal-800 mt-0.5">{{ item.quantity|default:'—' }}</p>
+            </div>
+            <div>
+                <p class="text-[10px] font-bold text-charcoal-400 uppercase tracking-wider">Tanggal Beli</p>
+                <p class="text-sm font-medium text-charcoal-800 mt-0.5">{{ item.purchase_date|default:'—' }}</p>
+            </div>
+            <div class="col-span-2">
+                <p class="text-[10px] font-bold text-charcoal-400 uppercase tracking-wider">Lokasi Instalasi</p>
+                <p class="text-sm font-medium text-charcoal-800 mt-0.5">{{ item.location_install|default:'—' }}</p>
+            </div>
+            <div class="col-span-2">
+                <p class="text-[10px] font-bold text-charcoal-400 uppercase tracking-wider">Ruangan</p>
+                <p class="text-sm font-medium text-charcoal-800 mt-0.5">{{ item.room_location|default:'—' }}</p>
+            </div>
+            <div>
+                <p class="text-[10px] font-bold text-charcoal-400 uppercase tracking-wider">Period Import</p>
+                <p class="text-sm font-medium text-charcoal-800 mt-0.5">{{ item.import_month|default:'—' }}</p>
+            </div>
+        </div>
+        {% if item.notes %}
+        <div class="mt-4 pt-3 border-t border-charcoal-50">
+            <p class="text-[10px] font-bold text-charcoal-400 uppercase tracking-wider mb-1">Catatan</p>
+            <p class="text-xs text-charcoal-600 leading-relaxed">{{ item.notes }}</p>
+        </div>
+        {% endif %}
+    </div>
+
+</div>
+
+<!-- Activity Log -->
+<div class="bg-white rounded-2xl border border-charcoal-100 shadow-sm p-5">
+    <div class="flex items-center justify-between mb-4">
+        <h2 class="flex items-center gap-2 text-sm font-bold text-charcoal-800">
+            <span class="w-2 h-2 rounded-full bg-emerald-400" id="activityIndicator"></span>
+            Activity Log
+        </h2>
+        <span class="text-[10px] text-charcoal-400" id="lastUpdated">Updating...</span>
+    </div>
+    <div id="multiUserAlert" class="hidden mb-3 flex items-center gap-2 px-3 py-2 bg-amber-50 border border-amber-200 rounded-xl">
+        <i class="ph-bold ph-warning text-amber-500 text-sm"></i>
+        <span class="text-xs font-semibold text-amber-700">⚡ Ada pengguna lain yang sedang mengedit aset ini!</span>
+    </div>
+    <div id="activityList" class="divide-y divide-charcoal-50">
+        <div class="flex items-center gap-3 py-3 text-charcoal-400">
+            <i class="ph-light ph-spinner-gap text-lg animate-spin"></i>
+            <span class="text-xs">Memuat riwayat aktivitas...</span>
+        </div>
+    </div>
+</div>
+
+<script>
+(function() {
+    const MODEL = 'SoftwareLicense', ID = '{{ item.pk }}';
+    const URL = '{% url "core:asset_activity_json" %}';
+    function load() {
+        fetch(`${URL}?model=${MODEL}&id=${ID}`).then(r => r.json()).then(data => {
+            const list = document.getElementById('activityList');
+            const alert = document.getElementById('multiUserAlert');
+            const dot = document.getElementById('activityIndicator');
+            document.getElementById('lastUpdated').textContent = 'Live · ' + new Date().toLocaleTimeString('id-ID');
+            if (data.multi_user_active) { alert.classList.remove('hidden'); dot.style.background = '#f59e0b'; }
+            else { alert.classList.add('hidden'); dot.style.background = '#10b981'; }
+            if (!data.logs.length) { list.innerHTML = '<p class="text-xs text-charcoal-400 py-3">Belum ada aktivitas.</p>'; return; }
+            const colors = { update: 'bg-blue-100 text-blue-700', create: 'bg-emerald-100 text-emerald-700', delete: 'bg-red-100 text-red-700' };
+            list.innerHTML = data.logs.map(log => `
+                <div class="flex items-center gap-3 py-2.5">
+                    <div class="w-7 h-7 rounded-full bg-gradient-to-br from-violet-500 to-purple-600 flex items-center justify-center text-white text-[10px] font-bold flex-shrink-0">
+                        ${(log.user||'S').substring(0,2).toUpperCase()}
+                    </div>
+                    <div class="flex-1 min-w-0">
+                        <div class="flex items-center gap-2">
+                            <span class="text-xs font-semibold text-charcoal-800">${log.user}</span>
+                            <span class="text-[10px] font-bold px-1.5 py-0.5 rounded ${colors[log.action_code]||'bg-charcoal-100 text-charcoal-600'}">${log.action}</span>
+                        </div>
+                        <p class="text-[10px] text-charcoal-400 mt-0.5">${log.timestamp}</p>
+                    </div>
+                </div>`).join('');
+        });
+    }
+    load(); setInterval(load, 5000);
+})();
+</script>
+
+{% endblock %}

@@ -1,0 +1,157 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}{{ item.asset_name }} — ASSETRACK PRO{% endblock %}
+{% block page_title %}Software Application Detail{% endblock %}
+
+{% block content %}
+
+<!-- Header -->
+<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-5">
+    <div>
+        <p class="text-xs text-charcoal-400 mb-1">
+            <a href="{% url 'core:asset_list' %}?tab=application" class="hover:text-blue-600 transition-colors">Daftar Aset</a>
+            <span class="mx-1.5">›</span> <span>Software Aplikasi</span>
+        </p>
+        <h1 class="text-2xl font-bold text-charcoal-900 tracking-tight">{{ item.asset_name }}</h1>
+    </div>
+    <div class="flex items-center gap-2">
+        <a href="{% url 'core:softwareapplication_edit' item.pk %}" class="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold transition-all duration-200 shadow-sm">
+            <i class="ph-bold ph-pencil-simple"></i> Edit Asset
+        </a>
+        <a href="{% url 'core:asset_list' %}?tab=application" class="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl border border-charcoal-200 text-charcoal-600 hover:bg-charcoal-50 text-xs font-medium transition-all duration-200">
+            <i class="ph-bold ph-arrow-left"></i> Kembali
+        </a>
+    </div>
+</div>
+
+<!-- Top Row: Info | Security CIA -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+
+    <!-- Application Info -->
+    <div class="bg-white rounded-2xl border border-charcoal-100 shadow-sm p-5">
+        <h2 class="flex items-center gap-2 text-sm font-bold text-charcoal-800 mb-4">
+            <i class="ph-bold ph-globe text-green-500"></i> Application Information
+        </h2>
+        <div class="grid grid-cols-2 gap-x-4 gap-y-3">
+            <div>
+                <p class="text-[10px] font-bold text-charcoal-400 uppercase tracking-wider">Sub-Class</p>
+                <p class="text-sm font-medium text-charcoal-800 mt-0.5">{{ item.sub_class|default:'—' }}</p>
+            </div>
+            <div>
+                <p class="text-[10px] font-bold text-charcoal-400 uppercase tracking-wider">Owner</p>
+                <p class="text-sm font-medium text-charcoal-800 mt-0.5">{{ item.owner|default:'—' }}</p>
+            </div>
+            <div>
+                <p class="text-[10px] font-bold text-charcoal-400 uppercase tracking-wider">Location</p>
+                <p class="text-sm font-medium text-charcoal-800 mt-0.5">{{ item.location|default:'—' }}</p>
+            </div>
+            <div>
+                <p class="text-[10px] font-bold text-charcoal-400 uppercase tracking-wider">Value</p>
+                <p class="text-sm font-medium text-charcoal-800 mt-0.5">{{ item.value|default:'—' }}</p>
+            </div>
+            <div>
+                <p class="text-[10px] font-bold text-charcoal-400 uppercase tracking-wider">Period Import</p>
+                <p class="text-sm font-medium text-charcoal-800 mt-0.5">{{ item.import_month|default:'—' }}</p>
+            </div>
+            {% if item.ip_address %}
+            <div>
+                <p class="text-[10px] font-bold text-charcoal-400 uppercase tracking-wider">IP Address</p>
+                <p class="text-sm font-mono font-semibold text-charcoal-800 mt-0.5">{{ item.ip_address }}</p>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Security CIA -->
+    <div class="bg-white rounded-2xl border border-charcoal-100 shadow-sm p-5">
+        <h2 class="flex items-center gap-2 text-sm font-bold text-charcoal-800 mb-4">
+            <i class="ph-bold ph-shield-check text-blue-500"></i> Security Classification
+        </h2>
+        <div class="space-y-4">
+            <div>
+                <div class="flex justify-between items-center mb-1.5">
+                    <span class="text-[11px] font-semibold text-charcoal-600">Confidentiality</span>
+                    <span class="text-xs font-bold text-indigo-600">{{ item.confidentiality|default:0 }}/10</span>
+                </div>
+                <div class="h-2 bg-charcoal-100 rounded-full overflow-hidden">
+                    <div class="h-full bg-indigo-500 rounded-full" style="width: {{ item.confidentiality|default:0 }}0%"></div>
+                </div>
+            </div>
+            <div>
+                <div class="flex justify-between items-center mb-1.5">
+                    <span class="text-[11px] font-semibold text-charcoal-600">Integrity</span>
+                    <span class="text-xs font-bold text-emerald-600">{{ item.integrity|default:0 }}/10</span>
+                </div>
+                <div class="h-2 bg-charcoal-100 rounded-full overflow-hidden">
+                    <div class="h-full bg-emerald-500 rounded-full" style="width: {{ item.integrity|default:0 }}0%"></div>
+                </div>
+            </div>
+            <div>
+                <div class="flex justify-between items-center mb-1.5">
+                    <span class="text-[11px] font-semibold text-charcoal-600">Availability</span>
+                    <span class="text-xs font-bold text-amber-600">{{ item.availability|default:0 }}/10</span>
+                </div>
+                <div class="h-2 bg-charcoal-100 rounded-full overflow-hidden">
+                    <div class="h-full bg-amber-500 rounded-full" style="width: {{ item.availability|default:0 }}0%"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<!-- Activity Log -->
+<div class="bg-white rounded-2xl border border-charcoal-100 shadow-sm p-5">
+    <div class="flex items-center justify-between mb-4">
+        <h2 class="flex items-center gap-2 text-sm font-bold text-charcoal-800">
+            <span class="w-2 h-2 rounded-full bg-emerald-400" id="activityIndicator"></span>
+            Activity Log
+        </h2>
+        <span class="text-[10px] text-charcoal-400" id="lastUpdated">Updating...</span>
+    </div>
+    <div id="multiUserAlert" class="hidden mb-3 flex items-center gap-2 px-3 py-2 bg-amber-50 border border-amber-200 rounded-xl">
+        <i class="ph-bold ph-warning text-amber-500 text-sm"></i>
+        <span class="text-xs font-semibold text-amber-700">⚡ Ada pengguna lain yang sedang mengedit aset ini!</span>
+    </div>
+    <div id="activityList" class="divide-y divide-charcoal-50">
+        <div class="flex items-center gap-3 py-3 text-charcoal-400">
+            <i class="ph-light ph-spinner-gap text-lg animate-spin"></i>
+            <span class="text-xs">Memuat riwayat aktivitas...</span>
+        </div>
+    </div>
+</div>
+
+<script>
+(function() {
+    const MODEL = 'SoftwareApplication', ID = '{{ item.pk }}';
+    const URL = '{% url "core:asset_activity_json" %}';
+    function load() {
+        fetch(`${URL}?model=${MODEL}&id=${ID}`).then(r => r.json()).then(data => {
+            const list = document.getElementById('activityList');
+            const alert = document.getElementById('multiUserAlert');
+            const dot = document.getElementById('activityIndicator');
+            document.getElementById('lastUpdated').textContent = 'Live · ' + new Date().toLocaleTimeString('id-ID');
+            if (data.multi_user_active) { alert.classList.remove('hidden'); dot.style.background = '#f59e0b'; }
+            else { alert.classList.add('hidden'); dot.style.background = '#10b981'; }
+            if (!data.logs.length) { list.innerHTML = '<p class="text-xs text-charcoal-400 py-3">Belum ada aktivitas.</p>'; return; }
+            const colors = { update: 'bg-blue-100 text-blue-700', create: 'bg-emerald-100 text-emerald-700', delete: 'bg-red-100 text-red-700' };
+            list.innerHTML = data.logs.map(log => `
+                <div class="flex items-center gap-3 py-2.5">
+                    <div class="w-7 h-7 rounded-full bg-gradient-to-br from-green-500 to-emerald-600 flex items-center justify-center text-white text-[10px] font-bold flex-shrink-0">
+                        ${(log.user||'S').substring(0,2).toUpperCase()}
+                    </div>
+                    <div class="flex-1 min-w-0">
+                        <div class="flex items-center gap-2">
+                            <span class="text-xs font-semibold text-charcoal-800">${log.user}</span>
+                            <span class="text-[10px] font-bold px-1.5 py-0.5 rounded ${colors[log.action_code]||'bg-charcoal-100 text-charcoal-600'}">${log.action}</span>
+                        </div>
+                        <p class="text-[10px] text-charcoal-400 mt-0.5">${log.timestamp}</p>
+                    </div>
+                </div>`).join('');
+        });
+    }
+    load(); setInterval(load, 5000);
+})();
+</script>
+
+{% endblock %}

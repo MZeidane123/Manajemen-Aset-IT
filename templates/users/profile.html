@@ -1,0 +1,97 @@
+{% extends 'base.html' %}
+{% block title %}Profil — ASSETRACK PRO{% endblock %}
+{% block page_title %}Profil{% endblock %}
+
+{% block content %}
+<div class="max-w-2xl mx-auto">
+    <div class="scroll-reveal revealed">
+        <div class="rounded-2xl bg-white p-[1px] shadow-ambient ring-1 ring-black/[0.03] card-double-bezel">
+            <div class="rounded-[calc(1rem-1px)] bg-white shadow-[inset_0_1px_1px_rgba(255,255,255,0.8)]">
+                <!-- Profile Header -->
+                <div class="relative px-8 pt-8 pb-6 bg-gradient-to-br from-blue-50/30 via-white to-blue-50/20 rounded-t-[calc(1rem-1px)] border-b border-charcoal-100/40">
+                    <div class="flex items-center gap-5">
+                        <div class="w-16 h-16 rounded-squircle bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center text-2xl font-bold text-white flex-shrink-0 shadow-lg shadow-blue-500/25 relative overflow-hidden">
+                            <div class="absolute inset-0 bg-gradient-to-tr from-white/20 to-transparent"></div>
+                            <span class="relative z-10">{{ user.email|first|upper }}</span>
+                        </div>
+                        <div>
+                            <span class="eyebrow-tag mb-1.5">Profile</span>
+                            <h2 class="font-display text-lg font-semibold text-charcoal-800">{{ user.get_full_name|default:user.email }}</h2>
+                            <span class="inline-flex items-center gap-1 mt-0.5 text-xs font-medium
+                                {% if user.role == 'admin_it' %}text-purple-600
+                                {% elif user.role == 'editor' %}text-blue-600
+                                {% else %}text-charcoal-500{% endif %}">
+                                <i class="ph-bold
+                                    {% if user.role == 'admin_it' %}ph-shield-check
+                                    {% elif user.role == 'editor' %}ph-pencil
+                                    {% else %}ph-eye{% endif %} text-sm"></i>
+                                {{ user.get_role_display }}
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Info Grid -->
+                <div class="px-8 py-6 space-y-5">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-5">
+                        <div class="flex items-start gap-3">
+                            <div class="w-8 h-8 rounded-lg bg-blue-50 flex items-center justify-center flex-shrink-0">
+                                <i class="ph-bold ph-envelope text-blue-600 text-sm"></i>
+                            </div>
+                            <div>
+                                <span class="text-[10px] font-semibold text-charcoal-400 uppercase tracking-wider">Email</span>
+                                <p class="text-sm font-medium text-charcoal-800 mt-0.5">{{ user.email }}</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start gap-3">
+                            <div class="w-8 h-8 rounded-lg bg-charcoal-50 flex items-center justify-center flex-shrink-0">
+                                <i class="ph-bold ph-user text-charcoal-500 text-sm"></i>
+                            </div>
+                            <div>
+                                <span class="text-[10px] font-semibold text-charcoal-400 uppercase tracking-wider">Username</span>
+                                <p class="text-sm font-medium text-charcoal-800 mt-0.5">{{ user.username }}</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start gap-3">
+                            <div class="w-8 h-8 rounded-lg bg-purple-50 flex items-center justify-center flex-shrink-0">
+                                <i class="ph-bold ph-identification-badge text-purple-600 text-sm"></i>
+                            </div>
+                            <div>
+                                <span class="text-[10px] font-semibold text-charcoal-400 uppercase tracking-wider">Role</span>
+                                <p class="text-sm font-medium text-charcoal-800 mt-0.5">{{ user.get_role_display }}</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start gap-3">
+                            <div class="w-8 h-8 rounded-lg bg-emerald-50 flex items-center justify-center flex-shrink-0">
+                                <i class="ph-bold ph-phone text-emerald-600 text-sm"></i>
+                            </div>
+                            <div>
+                                <span class="text-[10px] font-semibold text-charcoal-400 uppercase tracking-wider">Telepon</span>
+                                <p class="text-sm font-medium text-charcoal-800 mt-0.5">{{ user.phone|default:'—' }}</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start gap-3">
+                            <div class="w-8 h-8 rounded-lg bg-amber-50 flex items-center justify-center flex-shrink-0">
+                                <i class="ph-bold ph-calendar-plus text-amber-600 text-sm"></i>
+                            </div>
+                            <div>
+                                <span class="text-[10px] font-semibold text-charcoal-400 uppercase tracking-wider">Bergabung</span>
+                                <p class="text-sm font-medium text-charcoal-800 mt-0.5">{{ user.date_joined|date:'d M Y' }}</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start gap-3">
+                            <div class="w-8 h-8 rounded-lg bg-blue-50 flex items-center justify-center flex-shrink-0">
+                                <i class="ph-bold ph-clock text-blue-600 text-sm"></i>
+                            </div>
+                            <div>
+                                <span class="text-[10px] font-semibold text-charcoal-400 uppercase tracking-wider">Terakhir Login</span>
+                                <p class="text-sm font-medium text-charcoal-800 mt-0.5">{{ user.last_login|date:'d M Y H:i' }}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

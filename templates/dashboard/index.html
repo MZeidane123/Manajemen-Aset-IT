@@ -1,0 +1,345 @@
+{% extends 'base.html' %}
+{% load humanize %}
+{% block title %}Dashboard — ASSETRACK PRO{% endblock %}
+{% block page_title %}Dashboard{% endblock %}
+
+{% block content %}
+
+<!-- ===== PAGE HEADER & FILTER ===== -->
+<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6 scroll-reveal revealed">
+    <div>
+        <h2 class="text-xl font-bold text-charcoal-900 tracking-tight">Dashboard Overview</h2>
+        <p class="text-xs text-charcoal-400 mt-1">Ringkasan statistik seluruh aset IT.</p>
+    </div>
+    
+    <div class="flex items-center gap-2">
+        <span class="text-xs font-semibold text-charcoal-500">Kategori:</span>
+        <div class="relative">
+            <select onchange="window.location.href='?category=' + this.value" class="appearance-none bg-white border border-charcoal-200 text-charcoal-700 text-xs font-semibold rounded-xl pl-4 pr-10 py-2.5 focus:outline-none focus:ring-2 focus:ring-blue-500 cursor-pointer shadow-sm">
+                <option value="all" {% if cat_filter == 'all' or not cat_filter %}selected{% endif %}>Semua Aset</option>
+                <option value="physical" {% if cat_filter == 'physical' %}selected{% endif %}>Physical Asset</option>
+                <option value="notebook" {% if cat_filter == 'notebook' %}selected{% endif %}>Notebook Lease</option>
+                <option value="software" {% if cat_filter == 'software' %}selected{% endif %}>Software (License & App)</option>
+            </select>
+            <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3 text-charcoal-400">
+                <i class="ph-bold ph-caret-down text-xs"></i>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- ===== KPI METRICS — Asymmetrical Bento with Double-Bezel ===== -->
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 mb-8">
+
+    <!-- KPI 1: Total Aset -->
+    <div class="scroll-reveal card-double-bezel lg:col-span-2 rounded-2xl bg-white p-[1px] shadow-ambient ring-1 ring-black/[0.03]">
+        <div class="rounded-[calc(1rem-1px)] bg-gradient-to-br from-white to-blue-50/30 p-6 shadow-[inset_0_1px_1px_rgba(255,255,255,0.9)] h-full">
+            <div class="flex items-start justify-between mb-4">
+                <div>
+                    <span class="eyebrow-tag">Overview</span>
+                    <h3 class="font-display text-sm font-semibold text-charcoal-800 mt-2.5 text-balance">Total Aset</h3>
+                </div>
+                <div class="w-11 h-11 rounded-squircle bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center shadow-lg shadow-blue-500/25 relative overflow-hidden flex-shrink-0">
+                    <div class="absolute inset-0 bg-gradient-to-tr from-white/20 to-transparent"></div>
+                    <i class="ph-bold ph-cube text-white text-lg relative z-10"></i>
+                </div>
+            </div>
+            <p class="metric-value text-3xl text-charcoal-900 tracking-tight">{{ total_assets }}</p>
+            <div class="flex items-center gap-2.5 mt-2.5">
+                <span class="inline-flex items-center gap-1.5 text-[11px] font-semibold text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded-full ring-1 ring-emerald-200/50">
+                    <span class="badge-dot bg-emerald-500"></span>
+                    {{ active_assets }} aktif
+                </span>
+                <span class="text-[11px] text-charcoal-400 font-medium">dari total</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- KPI 2: Kepatuhan Data -->
+    <div class="scroll-reveal scroll-reveal-delay-1 card-double-bezel lg:col-span-2 rounded-2xl bg-white p-[1px] shadow-ambient ring-1 ring-black/[0.03]">
+        <div class="rounded-[calc(1rem-1px)] bg-gradient-to-br from-white to-emerald-50/30 p-6 shadow-[inset_0_1px_1px_rgba(255,255,255,0.9)] h-full flex flex-col">
+            <div class="flex items-start justify-between mb-4">
+                <div>
+                    <span class="eyebrow-tag" style="background: rgba(16,185,129,0.06); color: #10b981; border-color: rgba(16,185,129,0.12);">Compliance</span>
+                    <h3 class="font-display text-sm font-semibold text-charcoal-800 mt-2.5">Kepatuhan Data</h3>
+                </div>
+                <div class="w-11 h-11 rounded-squircle bg-gradient-to-br from-emerald-500 to-emerald-600 flex items-center justify-center shadow-lg shadow-emerald-500/25 relative overflow-hidden flex-shrink-0">
+                    <div class="absolute inset-0 bg-gradient-to-tr from-white/20 to-transparent"></div>
+                    <i class="ph-bold ph-check-circle text-white text-lg relative z-10"></i>
+                </div>
+            </div>
+            <div class="flex-1 flex flex-col justify-end">
+                <div class="flex items-baseline gap-1">
+                    <span class="metric-value text-3xl text-charcoal-900 tracking-tight">{{ compliance_score }}</span>
+                    <span class="text-base font-semibold text-charcoal-400">%</span>
+                </div>
+                <div class="mt-3">
+                    <div class="w-full bg-charcoal-100/60 rounded-full h-1.5 overflow-hidden ring-1 ring-inset ring-black/[0.02]">
+                        <div class="progress-bar bg-gradient-to-r from-emerald-400 to-emerald-500 h-full rounded-full" style="width: {{ compliance_score }}%"></div>
+                    </div>
+                    <p class="text-[11px] text-charcoal-400 mt-1.5 font-medium">aset dengan data lengkap</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ===== CHARTS SECTION — Asymmetrical Bento ===== -->
+<div class="mb-8">
+
+    <!-- Bar Chart -->
+    <div class="scroll-reveal scroll-reveal-delay-2">
+        <div class="rounded-2xl bg-white p-[1px] shadow-ambient ring-1 ring-black/[0.03] card-double-bezel">
+            <div class="rounded-[calc(1rem-1px)] bg-white p-6 shadow-[inset_0_1px_1px_rgba(255,255,255,0.8)]">
+                <div class="flex items-start justify-between mb-5">
+                    <div>
+                        <span class="eyebrow-tag">Analytics</span>
+                        <h3 class="font-display text-sm font-semibold text-charcoal-800 mt-2.5">Aset per Kategori</h3>
+                        <p class="text-xs text-charcoal-400 mt-0.5">Distribusi jumlah aset berdasarkan kategori</p>
+                    </div>
+                    <span class="text-[10px] font-medium text-charcoal-400 bg-charcoal-50 px-2.5 py-1 rounded-full ring-1 ring-charcoal-100 whitespace-nowrap">{{ categories_labels|length }} kategori</span>
+                </div>
+                <div class="relative" style="height: 320px;">
+                    <canvas id="barChart" aria-label="Bar chart showing assets by category" role="img"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<!-- ===== BOTTOM CHARTS ROW — Location Pie + Email License ===== -->
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-5 mb-8">
+    <!-- Pie Chart: Sebaran Lokasi -->
+    <div class="scroll-reveal">
+        <div class="rounded-2xl bg-white p-[1px] shadow-ambient ring-1 ring-black/[0.03] card-double-bezel h-full">
+            <div class="rounded-[calc(1rem-1px)] bg-white p-6 shadow-[inset_0_1px_1px_rgba(255,255,255,0.8)] h-full flex flex-col">
+                <div class="flex items-start justify-between mb-4">
+                    <div>
+                        <span class="eyebrow-tag" style="background: rgba(245,158,11,0.06); color: #d97706; border-color: rgba(245,158,11,0.12);">Overview</span>
+                        <h3 class="font-display text-sm font-semibold text-charcoal-800 mt-2.5">{{ pie_chart_title|default:'Distribusi' }}</h3>
+                        <p class="text-xs text-charcoal-400 mt-0.5">{{ pie_chart_subtitle|default:'' }}</p>
+                    </div>
+                </div>
+                <div class="flex-1 flex flex-col items-center justify-center">
+                    {% if locations_data %}
+                    <div class="relative" style="height: 240px; width: 100%;">
+                        <canvas id="locationPieChart" aria-label="Pie chart showing asset distribution" role="img"></canvas>
+                    </div>
+                    {% else %}
+                    <div class="text-center py-12">
+                        <div class="w-14 h-14 rounded-2xl bg-charcoal-50 flex items-center justify-center mx-auto mb-3.5 ring-1 ring-charcoal-100">
+                            <i class="ph-bold ph-chart-pie-slice text-charcoal-300 text-2xl"></i>
+                        </div>
+                        <p class="text-sm font-medium text-charcoal-500">Belum ada data untuk grafik ini.</p>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Tabel Ringkasan Lisensi Email -->
+    <div class="scroll-reveal scroll-reveal-delay-1">
+        <div class="rounded-2xl bg-white p-[1px] shadow-ambient ring-1 ring-black/[0.03] card-double-bezel h-full">
+            <div class="rounded-[calc(1rem-1px)] bg-white p-6 shadow-[inset_0_1px_1px_rgba(255,255,255,0.8)] h-full flex flex-col">
+                <div class="flex items-start justify-between mb-4">
+                    <div>
+                        <span class="eyebrow-tag" style="background: rgba(59,130,246,0.06); color: #3b82f6; border-color: rgba(59,130,246,0.12);">Detail</span>
+                        <h3 class="font-display text-sm font-semibold text-charcoal-800 mt-2.5">{{ list_chart_title|default:'Ringkasan' }}</h3>
+                        <p class="text-xs text-charcoal-400 mt-0.5">{{ list_chart_subtitle|default:'' }}</p>
+                    </div>
+                </div>
+                <div class="flex-1">
+                    {% if list_chart_data %}
+                    <div class="space-y-3">
+                        {% for item in list_chart_data %}
+                        <div class="flex items-center justify-between p-3.5 rounded-xl bg-charcoal-50/40 border border-charcoal-100/50">
+                            <div class="flex items-center gap-3">
+                                <span class="w-2.5 h-2.5 rounded-full flex-shrink-0 bg-blue-500"></span>
+                                <span class="text-sm font-medium text-charcoal-700">{{ item.label|default:'Tidak diketahui'|title }}</span>
+                            </div>
+                            <span class="text-sm font-semibold text-charcoal-900 tabular-nums">{{ item.count }}</span>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    {% else %}
+                    <div class="text-center py-12">
+                        <div class="w-14 h-14 rounded-2xl bg-charcoal-50 flex items-center justify-center mx-auto mb-3.5 ring-1 ring-charcoal-100">
+                            <i class="ph-bold ph-list-dashes text-charcoal-300 text-2xl"></i>
+                        </div>
+                        <p class="text-sm font-medium text-charcoal-500">Belum ada data detail.</p>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}
+
+{% block extra_js %}
+<script>
+// ===== DISMISS ALERT =====
+function dismissAlert() {
+    const alert = document.getElementById('contractAlert');
+    if (alert) {
+        alert.style.transition = 'all 0.5s cubic-bezier(0.16, 1, 0.3, 1)';
+        alert.style.opacity = '0';
+        alert.style.transform = 'translateY(-10px) scale(0.98)';
+        setTimeout(() => alert.remove(), 500);
+    }
+}
+
+// ===== CHART CONFIG =====
+const COLORS = {
+    blue: 'rgba(59, 130, 246, 0.8)',
+    emerald: 'rgba(16, 185, 129, 0.8)',
+    amber: 'rgba(245, 158, 11, 0.8)',
+    purple: 'rgba(139, 92, 246, 0.8)',
+    red: 'rgba(239, 68, 68, 0.8)',
+    slate: 'rgba(100, 116, 139, 0.6)',
+};
+
+const bgColorSet = [COLORS.blue, COLORS.emerald, COLORS.amber, COLORS.purple, COLORS.red, COLORS.slate];
+
+const chartDefaults = {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+        legend: { display: false },
+        tooltip: {
+            backgroundColor: 'rgba(26, 26, 30, 0.94)',
+            titleColor: '#f4f4f5',
+            bodyColor: '#d4d4d8',
+            cornerRadius: 12,
+            padding: { top: 10, bottom: 10, left: 14, right: 14 },
+            titleFont: { family: "'Plus Jakarta Sans'", size: 12, weight: '600' },
+            bodyFont: { family: "'Plus Jakarta Sans'", size: 11 },
+            borderColor: 'rgba(255,255,255,0.06)',
+            borderWidth: 1,
+            displayColors: true,
+            boxPadding: 4,
+        }
+    }
+};
+
+// ===== CURVE CHART (Aset per Kategori) =====
+new Chart(document.getElementById('barChart'), {
+    type: 'line',
+    data: {
+        labels: {{ categories_labels|safe }},
+        datasets: [{
+            label: 'Jumlah Aset',
+            data: {{ categories_data|safe }},
+            backgroundColor: 'rgba(59, 130, 246, 0.15)',
+            borderColor: COLORS.blue,
+            borderWidth: 3,
+            pointBackgroundColor: '#ffffff',
+            pointBorderColor: COLORS.blue,
+            pointBorderWidth: 2,
+            pointRadius: 4,
+            pointHoverRadius: 6,
+            fill: true,
+            tension: 0.4
+        }]
+    },
+    options: {
+        ...chartDefaults,
+        animation: {
+            duration: 1200,
+            easing: 'easeOutQuart'
+        },
+        scales: {
+            y: {
+                beginAtZero: true,
+                ticks: {
+                    stepSize: 1,
+                    color: '#a1a1aa',
+                    font: { family: "'Plus Jakarta Sans'", size: 11, weight: '500' },
+                    padding: 8,
+                },
+                grid: {
+                    color: 'rgba(0,0,0,0.03)',
+                    drawBorder: false,
+                },
+                border: { display: false }
+            },
+            x: {
+                ticks: {
+                    autoSkip: false,
+                    color: '#a1a1aa',
+                    font: { family: "'Plus Jakarta Sans'", size: 10, weight: '500' },
+                    maxRotation: 0,
+                    minRotation: 0,
+                    padding: 8,
+                    callback: function(value, index, values) {
+                        const label = this.getLabelForValue(value);
+                        if (label.length > 20) {
+                            return label.substring(0, 18) + '...';
+                        }
+                        return label;
+                    }
+                },
+                grid: { display: false },
+                border: { display: false }
+            }
+        }
+    }
+});
+
+// ===== LOCATION PIE CHART =====
+new Chart(document.getElementById('locationPieChart'), {
+    type: 'pie',
+    data: {
+        labels: {{ locations_labels|safe }},
+        datasets: [{
+            data: {{ locations_data|safe }},
+            backgroundColor: ['rgba(59,130,246,0.8)', 'rgba(16,185,129,0.8)', 'rgba(245,158,11,0.8)',
+                             'rgba(139,92,246,0.8)', 'rgba(239,68,68,0.8)', 'rgba(100,116,139,0.6)',
+                             'rgba(236,72,153,0.8)', 'rgba(34,211,238,0.8)'],
+            borderWidth: 0,
+        }]
+    },
+    options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+            legend: {
+                position: 'bottom',
+                labels: {
+                    padding: 16,
+                    usePointStyle: true,
+                    pointStyle: 'circle',
+                    font: { family: "'Plus Jakarta Sans'", size: 11, weight: '500' },
+                    color: '#52525b',
+                }
+            },
+            tooltip: {
+                backgroundColor: 'rgba(26, 26, 30, 0.94)',
+                titleColor: '#f4f4f5',
+                bodyColor: '#d4d4d8',
+                cornerRadius: 12,
+                padding: { top: 10, bottom: 10, left: 14, right: 14 },
+                titleFont: { family: "'Plus Jakarta Sans'", size: 12, weight: '600' },
+                bodyFont: { family: "'Plus Jakarta Sans'", size: 11 },
+                callbacks: {
+                    label: function(ctx) {
+                        const total = ctx.dataset.data.reduce((a, b) => a + b, 0);
+                        return ctx.label + ': ' + ctx.parsed + ' aset (' + ((ctx.parsed / total) * 100).toFixed(1) + '%)';
+                    }
+                }
+            }
+        },
+        animation: {
+            animateRotate: true,
+            duration: 1200,
+            easing: 'easeOutQuart'
+        }
+    }
+});
+</script>
+{% endblock %}
